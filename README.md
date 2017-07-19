@@ -1,2 +1,2 @@
 # Qt-Licence-Plates-Recognition
-From the Matlab vision
+From the Matlab version
