@@ -1,4 +1,4 @@
-#include <QString>
+﻿#include <QString>
 #include <QImage>
 #include <QDir>
 #include <QDebug>
@@ -11,46 +11,10 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-
+#include "func.h"
 
 using namespace cv;
 using namespace std;
-//调整图像大小
-void size300(Mat &src);
-//取反
-Mat reverse_pic(Mat src);
-//二值化
-void binary(Mat &src);
-//消除边框影响
-Mat add_frame(Mat src);
-//去除小面积（输入：原图，出去小面积参数）
-vector<vector<Point> > bwareaopen(Mat &src, int n);
-//求垂直投影
-Mat V_Shadwo(Mat &src,int a = 0,string str = "鍨傜洿鎶曞奖");
-//求水平投影
-Mat H_Shadwo(Mat &src,int a = 0,string str = "姘村钩鎶曞奖");
-//水平裁剪H1(输入：垂直投影Mat，原图像；输出水平裁剪第一个y坐标)
-int H1_cut_value(Mat &H,Mat &input);
-//水平裁剪H2(输入：垂直投影Mat，原图像；输出水平裁剪第二个y坐标)
-int H2_cut_value(Mat &H,Mat &input);
-//垂直裁剪W1
-int W1_cut_value(Mat &V);
-//垂直裁剪W2
-int W2_cut_value(Mat &V);
-//字符分割
-vector<int> seg_character(Mat &V,Mat &input);
-//强制分割
-vector<int> force_seg(Mat &V,vector<int> W);
-//字符识别
-vector<QString> recognition(vector<Mat> &character);
-//字符去黑边(垂直裁剪)
-void character_cut_H(Mat &src,int k);
-//字符去黑边(水平裁剪)
-void character_cut_V(Mat &src,int k);
-//QImage转Mat
-QImage cvMat2QImage(const cv::Mat& mat);
-//特征匹配
-int featureMatch(Mat &src,int index);
 
 
 void size300(Mat &src)
@@ -102,10 +66,12 @@ Mat add_frame(Mat src)
 vector<vector<Point> > bwareaopen(Mat &src, int n)
 {
     //复制原图用于叠加
-    Mat temp = src;
-    temp = reverse_pic(temp);
     vector<vector<Point> > contours;
-    findContours(src, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
+    Mat temp;
+    src.copyTo(temp);
+//    imshow("1",src);
+    findContours(temp, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
+//    imshow("2",src);
     //Mat resultImage = Mat::zeros(src.size(), CV_8U);
     //drawContours(resultImage, contours, -1, Scalar(255, 0, 0), 1, 8);
     //imshow("轮廓", resultImage);
@@ -115,12 +81,10 @@ vector<vector<Point> > bwareaopen(Mat &src, int n)
         double dArea = contourArea(contours[i]);
         if (dArea <= n)
         {
-            drawContours(src, contours, i, Scalar(255), CV_FILLED);
+            drawContours(src, contours, i, Scalar(0), CV_FILLED);
         }
     }
     //vector<vector<Point>>().swap(contours);
-    threshold(src, src, 130, 255, THRESH_BINARY);
-    addWeighted(src, 1, temp, 1, 0.0,src);
     return contours;
 }
 
@@ -384,8 +348,8 @@ vector<int> force_seg(Mat &V,vector<int> W)
 
 vector<QString> recognition(vector<Mat> &character)
 {
-    //qDebug()<<"current applicationDirPath: "<< QCoreApplication::applicationDirPath();
-    //qDebug()<<"current currentPath: "<<QDir::currentPath();
+//    qDebug()<<"current applicationDirPath: "<< QCoreApplication::applicationDirPath();
+//    qDebug()<<"current currentPath: "<<QDir::currentPath();
     //读入模版图片
     //数字和字母
     vector<Mat> NumberLetter(36);
@@ -396,7 +360,7 @@ vector<QString> recognition(vector<Mat> &character)
         path = QCoreApplication::applicationDirPath();
         QString Q_ImgName;
         string ImgName;
-        Q_ImgName = path + "/sample/" + QString::number(i) + ".bmp";
+        Q_ImgName = path + "/NumberLetter/" + QString::number(i) + ".bmp";
         ImgName = Q_ImgName.toStdString();
         NumberLetter[i] = imread(ImgName,0);
         i++;
@@ -410,7 +374,7 @@ vector<QString> recognition(vector<Mat> &character)
         path = QCoreApplication::applicationDirPath();
         QString Q_ImgName;
         string ImgName;
-        Q_ImgName = path + "/sample_CNB/" + QString::number(i) + ".bmp";
+        Q_ImgName = path + "/ChineseCharacter/" + QString::number(i) + ".bmp";
         ImgName = Q_ImgName.toStdString();
         ChineseCharacter[i] = imread(ImgName,0);
         i++;

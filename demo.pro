@@ -16,10 +16,10 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     func.cpp
 
-INCLUDEPATH += D:/opencv3.2/opencv_use/include\
-               D:/opencv3.2/opencv_use/include/opencv\
-               D:/opencv3.2/opencv_use/include/opencv2
-LIBS += -L D:/opencv_use/lib/libopencv_*.a
+INCLUDEPATH += D:/opencv3.3/opencv_use/include\
+               D:/opencv3.3/opencv_use/include/opencv\
+               D:/opencv3.3/opencv_use/include/opencv2
+LIBS += -L D:/opencv3.3/opencv_use/lib/libopencv_*.a
 
 
 HEADERS  += mainwindow.h \
@@ -27,4 +27,5 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-RESOURCES +=
+RESOURCES += \
+    samples.qrc

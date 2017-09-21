@@ -1,19 +1,21 @@
-#include "mainwindow.h"
+ï»¿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 #include <QString>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QTextCodec>
 #include <QLabel>
+#include <QDebug>
 
 #include <assert.h>
 #include <opencv/cv.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include <func.h>
+#include "func.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -41,7 +43,7 @@ void MainWindow::on_pushButton_clicked()
     }
     else
     {
-        //image´ı´¦ÀíÍ¼Ïñ
+        //imageè¯»å–
         Mat input = imread(name);
         cvtColor(image,image,CV_BGR2RGB);
         img = QImage((const unsigned char*)(image.data),image.cols,image.rows, image.cols*image.channels(),  QImage::Format_RGB888);
@@ -52,12 +54,15 @@ void MainWindow::on_pushButton_clicked()
         ui->input_image->setPixmap(QPixmap::fromImage(img));
         ui->input_image->resize(ui->input_image->pixmap()->size());
         size300(input);
-        //»Ò¶È»¯
+        //ç°åº¦
         cvtColor(input, input, CV_BGR2GRAY);
-        //ÖĞÖµÂË²¨
+        //imshow("1",input);
+        //ä¸­å€¼æ»¤æ³¢
         medianBlur(input, input,3);
-        //¶şÖµ»¯
+        //imshow("2",input);
+        //äºŒå€¼åŒ–
         binary(input);
+        //imshow("3",input);
         img = cvMat2QImage(input);
         img = img.scaled(ui->ori_binarization->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
         //ui->input_image->setScaledContents(true);
@@ -65,12 +70,13 @@ void MainWindow::on_pushButton_clicked()
         ui->ori_binarization->clear();
         ui->ori_binarization->setPixmap(QPixmap::fromImage(img));
         ui->ori_binarization->resize(ui->ori_binarization->pixmap()->size());
-        //ÅĞ¶¨ÊÇ·ñÎª»ÆÉ«³µÅÆ
+        //åˆ¤å®šè½¦ç‰Œé¢œè‰²
         if (double(countNonZero(input)) / double(input.rows) / double(input.cols) > 0.5)
         {
             input = reverse_pic(input);
         }
-        //ÅĞ¶¨±Ê»­´ÖÏ¸
+        //imshow("4",input);
+        //åˆ¤å®šå­—ç¬¦ç²—ç»†
         Mat temp = input(Rect(round(input.cols*0.1),round(input.rows*0.1),round(input.cols*0.8),round(input.rows*0.8)));
         int sum_point = countNonZero(temp);
         if(double(sum_point) / double(temp.rows) / double(temp.cols) < 0.28 )
@@ -79,28 +85,35 @@ void MainWindow::on_pushButton_clicked()
             dilate(input,input,element);
         }
         input = add_frame(input);
-        //Ïû³ıÔëµã
+        //imshow("5",input);
+        //å»é™¤å°é¢ç§¯éƒ¨åˆ†
         vector<vector<Point>> contours;
         Mat tmpImage = input(cv::Rect(0, 0, round(input.cols*0.15), input.rows));
+//        imshow("1",tmpImage);
+//        imshow("2",input);
         contours = bwareaopen(tmpImage, 30);
+//        imshow("1",input);
+//        imshow("2",tmpImage);
         tmpImage = input(cv::Rect(round(input.cols*0.15), 0, input.cols - round(input.cols*0.15), input.rows));
         contours = bwareaopen(tmpImage, 275);
-        input = reverse_pic(input);
-        //ÊÍ·Åcontours
+//        imshow("1",input);
+//        imshow("2",tmpImage);
+
+        //æ¸…ç†contours
         vector<vector<Point>>().swap(contours);
         Mat H = H_Shadwo(input);
         Mat V = V_Shadwo(input,0);
-        //²Ã¼ôÍ¼Ïñ
-        //Ë®Æ½·½Ïò²Ã¼ô
+        //
+        //
         int H1 = H1_cut_value(H, input);
         int H2 = H2_cut_value(H, input);
         input = input(cv::Rect(0, H1, input.cols,H2 - H1));
-        V = V_Shadwo(input,0,"²Ã¼ôºóµÄ´¹Ö±Í¶Ó°");
-        //´¹Ö±·½Ïò²Ã¼ô
+        V = V_Shadwo(input,0,"1");
+        //
         int W1 = W1_cut_value(V);
         int W2 = W2_cut_value(V);
         input = input(Rect(W1, 0, W2 - W1, input.rows));
-        //ÏÔÊ¾Í¼Æ¬
+        //
         img = cvMat2QImage(input);
         img = img.scaled(ui->binarization->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
         //ui->input_image->setScaledContents(true);
@@ -108,10 +121,10 @@ void MainWindow::on_pushButton_clicked()
         ui->binarization->clear();
         ui->binarization->setPixmap(QPixmap::fromImage(img));
         ui->binarization->resize(ui->binarization->pixmap()->size());
-        //×Ö·û·Ö¸î
+        //
         vector<Mat> character(7);
         V = V_Shadwo(input);
-        //14¸ö·Ö¸îÏß
+        //14
         vector<int> W = seg_character(V,input);
         if (W[14] == 0)
         {
@@ -123,7 +136,7 @@ void MainWindow::on_pushButton_clicked()
                 }
             }
         }
-        //Èç¹û·Ö¸î´íÎóÎ»²»Îª0£¬Ôò¾­Ñé·Ö¸î
+        //
         if (W[14] != 0)
         {
             W = force_seg(V, W);
@@ -132,15 +145,15 @@ void MainWindow::on_pushButton_clicked()
         {
             character[i] = input(Rect(W[i * 2], 0, W[i * 2 + 1] - W[i * 2], input.rows));
         }
-        //Ïú»ÙÎŞÓÃ±äÁ¿
+        //
         vector<int>().swap(W);
         input.release();
         tmpImage.release();
         H.release();
         V.release();
-        //½øĞĞÊ¶±ğ
+        //
         vector<QString> result = recognition(character);
-        //Ñ­»·ÔÚlabelÖĞÏÔÊ¾Í¼Æ¬
+        //
         for(int i = 0;i < 7;i++)
         {
             img = cvMat2QImage(character[i]);
