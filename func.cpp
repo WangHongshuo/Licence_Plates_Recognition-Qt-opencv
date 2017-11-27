@@ -63,29 +63,33 @@ Mat add_frame(Mat src)
     return src;
 }
 
-vector<vector<Point> > bwareaopen(Mat &src, int n)
+void bwareaopen(Mat &data, int n)
 {
-    //复制原图用于叠加
-    vector<vector<Point> > contours;
-    Mat temp;
-    src.copyTo(temp);
-//    imshow("1",src);
-    findContours(temp, contours,RETR_EXTERNAL, CHAIN_APPROX_NONE);
-//    imshow("2",src);
-    //Mat resultImage = Mat::zeros(src.size(), CV_8U);
-    //drawContours(resultImage, contours, -1, Scalar(255, 0, 0), 1, 8);
-    //imshow("轮廓", resultImage);
-    int k = contours.size();
-    for (int i = 0; i < k; i++)
+    Mat labels,stats,centroids;
+    connectedComponentsWithStats(data,labels,stats,centroids,8,CV_16U);
+    int regions_count = stats.rows - 1;
+    int regions_size, regions_x1, regions_y1, regions_x2, regions_y2;
+
+    for(int i=1;i<=regions_count;i++)
     {
-        double dArea = contourArea(contours[i]);
-        if (dArea <= n)
+        regions_size = stats.ptr<int>(i)[4];
+        if(regions_size < n)
         {
-            drawContours(src, contours, i, Scalar(0), CV_FILLED);
+            regions_x1 = stats.ptr<int>(i)[0];
+            regions_y1 = stats.ptr<int>(i)[1];
+            regions_x2 = regions_x1 + stats.ptr<int>(i)[2];
+            regions_y2 = regions_y1 + stats.ptr<int>(i)[3];
+
+            for(int j=regions_y1;j<regions_y2;j++)
+            {
+                for(int k=regions_x1;k<regions_x2;k++)
+                {
+                    if(labels.ptr<ushort>(j)[k] == i)
+                        data.ptr<uchar>(j)[k] = 0;
+                }
+            }
         }
     }
-    //vector<vector<Point>>().swap(contours);
-    return contours;
 }
 
 Mat V_Shadwo(Mat &src,int a,string str)

@@ -84,23 +84,20 @@ void MainWindow::on_pushButton_clicked()
             Mat element = getStructuringElement(MORPH_RECT,Size(3,3));
             dilate(input,input,element);
         }
-        input = add_frame(input);
+//        input = add_frame(input);
         //imshow("5",input);
         //去除小面积部分
-        vector<vector<Point>> contours;
         Mat tmpImage = input(cv::Rect(0, 0, round(input.cols*0.15), input.rows));
 //        imshow("1",tmpImage);
 //        imshow("2",input);
-        contours = bwareaopen(tmpImage, 30);
+        bwareaopen(tmpImage, 30);
 //        imshow("1",input);
 //        imshow("2",tmpImage);
         tmpImage = input(cv::Rect(round(input.cols*0.15), 0, input.cols - round(input.cols*0.15), input.rows));
-        contours = bwareaopen(tmpImage, 275);
+        bwareaopen(tmpImage, 300);
 //        imshow("1",input);
 //        imshow("2",tmpImage);
 
-        //清理contours
-        vector<vector<Point>>().swap(contours);
         Mat H = H_Shadwo(input);
         Mat V = V_Shadwo(input,0);
         //

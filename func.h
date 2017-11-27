@@ -11,6 +11,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include "mainwindow.h"
 
 using namespace cv;
 using namespace std;
@@ -23,7 +24,7 @@ void binary(Mat &src);
 //消除边框影响
 Mat add_frame(Mat src);
 //去除小面积（输入：原图，出去小面积参数）
-vector<vector<Point> > bwareaopen(Mat &src, int n);
+void bwareaopen(Mat &src, int n);
 //求垂直投影
 Mat V_Shadwo(Mat &src,int a = 0,string str = "垂直投影");
 //求水平投影
@@ -48,5 +49,7 @@ void character_cut_H(Mat &src,int k);
 void character_cut_V(Mat &src,int k);
 //QImage与Mat转换
 QImage cvMat2QImage(const cv::Mat& mat);
+//特征匹配
+int featureMatch(Mat &src,int index);
 
 #endif // FUNC_H
