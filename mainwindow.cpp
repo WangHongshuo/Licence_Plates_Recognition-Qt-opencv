@@ -87,14 +87,14 @@ void MainWindow::on_pushButton_clicked()
 //        input = add_frame(input);
         //imshow("5",input);
         //去除小面积部分
-        Mat tmpImage = input(cv::Rect(0, 0, round(input.cols*0.15), input.rows));
+        Mat tmpImage = input(cv::Rect(0, 0, round(input.cols*0.3), input.rows));
 //        imshow("1",tmpImage);
 //        imshow("2",input);
         bwareaopen(tmpImage, 30);
 //        imshow("1",input);
 //        imshow("2",tmpImage);
-        tmpImage = input(cv::Rect(round(input.cols*0.15), 0, input.cols - round(input.cols*0.15), input.rows));
-        bwareaopen(tmpImage, 300);
+        tmpImage = input(cv::Rect(round(input.cols*0.3), 0, input.cols - round(input.cols*0.3), input.rows));
+        bwareaopen(tmpImage, 150);
 //        imshow("1",input);
 //        imshow("2",tmpImage);
 
