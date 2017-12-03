@@ -9,6 +9,7 @@
 #include <QTextCodec>
 #include <QLabel>
 #include <QDebug>
+#include <QTime>
 
 #include <assert.h>
 #include <opencv/cv.h>
@@ -31,6 +32,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
+
+
     QString filename = QFileDialog::getOpenFileName(this,tr("Open Image"),"",tr("Image File(*.bmp *.jpg *.jpeg *.png)"));
     QTextCodec *code = QTextCodec::codecForName("gb18030");
     std::string name = code->fromUnicode(filename).data();
@@ -43,6 +46,9 @@ void MainWindow::on_pushButton_clicked()
     }
     else
     {
+        QTime a;
+        a.start();
+
         //image读取
         Mat input = imread(name);
         cvtColor(image,image,CV_BGR2RGB);
@@ -167,6 +173,7 @@ void MainWindow::on_pushButton_clicked()
             ans += result[i];
         }
         ui->ans->setText(ans);
-    }
+        qDebug() << a.elapsed();
+    } 
 }
 

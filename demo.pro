@@ -14,7 +14,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    func.cpp
+    func.cpp \
+    lprecognizer.cpp
 
 INCLUDEPATH += D:/opencv3.3.1/opencv_use/include\
                D:/opencv3.3.1/opencv_use/include/opencv\
@@ -23,9 +24,8 @@ LIBS += -L D:/opencv3.3.1/opencv_use/lib/libopencv_*.a
 
 
 HEADERS  += mainwindow.h \
-    func.h
+    func.h \
+    lprecognizer.h
 
 FORMS    += mainwindow.ui
 
-RESOURCES += \
-    samples.qrc

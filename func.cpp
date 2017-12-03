@@ -583,7 +583,7 @@ void character_cut_H(Mat &src,int k)
 
 QImage cvMat2QImage(const cv::Mat& mat)
 {
-    //单通道
+    //1
     if(mat.type() == CV_8UC1)
     {
         QImage image(mat.cols, mat.rows, QImage::Format_Indexed8);
@@ -603,7 +603,7 @@ QImage cvMat2QImage(const cv::Mat& mat)
         }
         return image;
     }
-    //3通道
+    //3
     else if(mat.type() == CV_8UC3)
     {
         // Copy input Mat
