@@ -15,7 +15,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     func.cpp \
-    lprecognizer.cpp
+    lprecognizer.cpp \
+    mat_qimage_convert.cpp
 
 INCLUDEPATH += D:/opencv3.3.1/opencv_use/include\
                D:/opencv3.3.1/opencv_use/include/opencv\
@@ -25,7 +26,8 @@ LIBS += -L D:/opencv3.3.1/opencv_use/lib/libopencv_*.a
 
 HEADERS  += mainwindow.h \
     func.h \
-    lprecognizer.h
+    lprecognizer.h \
+    mat_qimage_convert.h
 
 FORMS    += mainwindow.ui
 

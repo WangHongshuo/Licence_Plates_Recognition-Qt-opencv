@@ -23,3 +23,9 @@ updated bwareaopen function and now it's similar to the one in matlab (relies on
 
 更新了bwareaopen函数，现在和matlab中的bwareaopen函数效果差不多了(依赖opencv3.3.1中的connectedComponentsWithStats函数）.
 
+2017.12.05
+
+ready to rebuild this shit. It will take 100ms to get the output.
+
+准备抽时间重写这个了，或许界面也应该重写一下吧？目前处理一张图片要100ms。
+
