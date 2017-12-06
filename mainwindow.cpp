@@ -30,9 +30,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_open_img_clicked()
 {
-
 
     QString filename = QFileDialog::getOpenFileName(this,tr("Open Image"),"",tr("Image File(*.bmp *.jpg *.jpeg *.png)"));
     QTextCodec *code = QTextCodec::codecForName("gb18030");
@@ -176,4 +175,5 @@ void MainWindow::on_pushButton_clicked()
         qDebug() << a.elapsed();
     } 
 }
+
 

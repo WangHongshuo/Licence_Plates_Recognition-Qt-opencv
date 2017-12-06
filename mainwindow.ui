@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="open_img">
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -353,7 +353,7 @@
      <string>Wang Hongshuo</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -386,21 +386,18 @@
      </item>
     </layout>
    </widget>
-   <zorder>pushButton</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>open_img</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>label</zorder>
-   <zorder>binarization</zorder>
-   <zorder>text_0</zorder>
-   <zorder>text_1</zorder>
-   <zorder>text_2</zorder>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>pushButton</tabstop>
+  <tabstop>open_img</tabstop>
  </tabstops>
  <resources/>
  <connections/>

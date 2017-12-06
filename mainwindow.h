@@ -19,7 +19,7 @@ public:
     QImage img;
 private slots:
 
-    void on_pushButton_clicked();
+    void on_open_img_clicked();
 
 private:
     Ui::MainWindow *ui;
