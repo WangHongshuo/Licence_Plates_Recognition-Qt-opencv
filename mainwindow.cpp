@@ -43,8 +43,8 @@ void MainWindow::on_open_img_clicked()
     }
     else
     {
-        QTime a;
-        a.start();
+//        QTime a;
+//        a.start();
 
         //
         recognizer.set_img(image);
@@ -107,6 +107,7 @@ void MainWindow::on_open_img_clicked()
 
         Mat H = H_Shadwo(input);
         Mat V = V_Shadwo(input,0);
+        qDebug() << H.ptr<ushort>(0)[40] << V.ptr<ushort>(0)[40];
         //
         //
         int H1 = H1_cut_value(H, input);
@@ -174,7 +175,7 @@ void MainWindow::on_open_img_clicked()
             ans += result[i];
         }
         ui->ans->setText(ans);
-        qDebug() << a.elapsed();
+//        qDebug() << a.elapsed();
     } 
 }
 

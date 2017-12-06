@@ -12,6 +12,8 @@ using namespace cv;
 class LPRecognizer
 {
 public:
+    enum{LPR_Horizontal, LPR_Vertical};
+
     LPRecognizer();
     LPRecognizer(Mat &input);
     void set_img(Mat &input);
@@ -22,14 +24,17 @@ public:
 private:
     void start_process();
     void pre_process(const Mat &input, Mat &output);
-    void optimize_binary_image(const Mat &input, Mat &output);
+    void optimize_binary_image(Mat &input, Mat &output);
     void fix_frame(Mat &input);
     void segment(const Mat &input, Mat *output_array);
     void recognize(const Mat *input_array,QString &ans,double *cov_ans);
 
     void fix_size(Mat &input);
     void binary(Mat &input);
-
+    void reverse_binary_img(Mat &input, Mat &output);
+    void fix_font_weight(Mat &input);
+    void bwareaopen(Mat &input, int n);
+    void projection(const Mat &input, Mat &data, int direction);
     Mat input_img;
 
 
