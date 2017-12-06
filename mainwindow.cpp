@@ -1,7 +1,5 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
 #include <iostream>
 #include <QString>
 #include <QFileDialog>
@@ -47,6 +45,10 @@ void MainWindow::on_open_img_clicked()
     {
         QTime a;
         a.start();
+
+        //
+        recognizer.set_img(image);
+        //
 
         //image读取
         Mat input = imread(name);
