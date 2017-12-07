@@ -36,6 +36,7 @@ private:
     void bwareaopen(Mat &input, int n);
     void projection(const Mat &input, Mat &data, int direction);
     Mat input_img;
+    Mat H_projection, V_projection;
 
 
 };

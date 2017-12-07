@@ -105,8 +105,8 @@ void MainWindow::on_open_img_clicked()
 //        imshow("1",input);
 //        imshow("2",tmpImage);
 
-        Mat H = H_Shadwo(input);
-        Mat V = V_Shadwo(input,0);
+        Mat H = H_Shadwo(input,1);
+        Mat V = V_Shadwo(input,1);
         qDebug() << H.ptr<ushort>(0)[40] << V.ptr<ushort>(0)[40];
         //
         //

@@ -67,10 +67,11 @@ void LPRecognizer::optimize_binary_image(Mat &input, Mat &output)
     bwareaopen(tmpImage, 30);
     tmpImage = output(cv::Rect(round(input.cols*0.3), 0, input.cols - round(input.cols*0.3), input.rows));
     bwareaopen(tmpImage, 150);
-    Mat H_projection, V_projection;
+
     projection(output,H_projection,LPR_Horizontal);
     projection(output,V_projection,LPR_Vertical);
-    qDebug() << H_projection.ptr<int>(0)[40] << V_projection.ptr<int>(0)[40];
+//    qDebug() << H_projection.ptr<int>(0)[40] << V_projection.ptr<int>(0)[40];
+
 
 }
 
