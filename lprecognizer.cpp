@@ -36,6 +36,9 @@ void LPRecognizer::start_process()
         imshow("pre",pre_processed_img);
         optimize_binary_image(pre_processed_img,fixed_img);
         imshow("fixed",fixed_img);
+        character_segmentation(fixed_img,character);
+//        for(int i=0;i<7;i++)
+//            imshow((QString::number(i)).toStdString(),character[i]);
     }
 
 }
@@ -90,12 +93,94 @@ void LPRecognizer::fix_frame(Mat &input)
 
 void LPRecognizer::character_segmentation(const Mat &input, Mat *output_array)
 {
-
+    projection(input,V_projection,LPR_VERTICAL);
+    int W[15] = {0};
+    W[13] = V_projection.cols;
+    int g = 13;
+    int n = V_projection.cols;
+    int t1, t2;
+    for (int i = V_projection.cols - 2; i > -1; i--)
+    {
+        t1 = V_projection.ptr<int>(0)[i];
+        t2 = V_projection.ptr<int>(0)[i + 1];
+        if ((t1 <= 3 && t2 > 3) || (t1 > 3 && t2 <= 3))
+        {
+            W[g - 1] = i;
+            if (g % 2 == 0)
+            {
+                W[g - 1] += 1;
+            }
+            g -= 1;
+            if (g == 1 && W[3] - W[2] < round(n*0.09))
+            {
+                g += 2;
+            }
+            if (g < 13 && g > 2 && g % 2 == 1 && W[g + 2] - W[g + 1] < round(n*0.03))
+            {
+                //Mat temp = input(Rect(W[i * 2], 0, W[i * 2 + 1] - W[i * 2], input.rows));
+                int sum_point = countNonZero(input(Rect(W[g + 1], 0, W[g + 2] - W[g + 1], input.rows)));
+                double k = double(sum_point) / double(input.rows) / double(W[g + 2] - W[g + 1]);
+                if (k < 0.75)
+                {
+                    W[g + 1] = 0;
+                    W[g] = 0;
+                    g += 2;
+                }
+            }
+            //判定汉字宽度
+            if(g == 0 && W[1] - W[0] < round(n*0.09))
+            {
+                g += 1;
+            }
+            if (g > 1 && i == 0)
+            {
+                W[14] = 1;
+                break;
+            }
+            if (g == 0)
+                break;
+        }
+        else if(i == 0 && g == 1)
+        {
+            W[0] = 0;
+        }
+    }
+    // 校验分割是否有错误 有则强制分割
+    if (W[14] == 0)
+    {
+        for (int i = 0; i < 7; i++)
+        {
+            if (W[i * 2 + 1] - W[i * 2] > round(input.cols*0.135))
+            {
+                W[14] += 1;
+            }
+        }
+    }
+//    qDebug() << W[3];
+    if(W[14] != 0)
+        force_character_segmentation(V_projection.cols,W);
+//    qDebug() << W[3];
+    // 分割
+    for (int i = 0; i < 7; i++)
+    {
+        character[i] = input(Rect(W[i * 2], 0, W[i * 2 + 1] - W[i * 2], input.rows));
+    }
 }
 
-void LPRecognizer::force_character_segmentation(const Mat &input, Mat *output_array)
+void LPRecognizer::force_character_segmentation(int image_width, int (&W)[15])
 {
-
+    int n = image_width;
+    W[0] = W[14] = 0;
+    W[1] = W[0] + round(n*0.11);
+    W[2] = W[1] + round(n*0.02);
+    W[3] = W[2] + round(n*0.11);
+    W[4] = W[3] + round(n*0.08);
+    W[13] = n;
+    for (int i = 2; i < 6; i++)
+    {
+        W[i * 2 + 1] = W[i * 2] + round(n*0.135);
+        W[i * 2 + 2] = W[i * 2 + 1];
+    }
 }
 
 void LPRecognizer::recognize(const Mat *input_array, QString &ans, double *cov_ans)

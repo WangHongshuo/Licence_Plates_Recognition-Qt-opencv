@@ -19,6 +19,7 @@ public:
     void set_img(Mat &input);
     Mat pre_processed_img;
     Mat fixed_img;
+    Mat character[7];
 
 
 private:
@@ -27,7 +28,7 @@ private:
     void optimize_binary_image(Mat &input, Mat &output);
     void fix_frame(Mat &input);
     void character_segmentation(const Mat &input, Mat *output_array);
-    void force_character_segmentation(const Mat &input, Mat *output_array);
+    void force_character_segmentation(const int image_width, int (&W)[15]);
     void recognize(const Mat *input_array,QString &ans,double *cov_ans);
 
     void fix_size(Mat &input);
