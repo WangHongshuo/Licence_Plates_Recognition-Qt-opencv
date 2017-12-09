@@ -2,6 +2,7 @@
 #include <QMessageBox>
 #include <QString>
 #include <QDebug>
+#include <iostream>
 
 
 LPRecognizer::LPRecognizer()
@@ -35,7 +36,6 @@ void LPRecognizer::start_process()
         imshow("pre",pre_processed_img);
         optimize_binary_image(pre_processed_img,fixed_img);
         imshow("fixed",fixed_img);
-
     }
 
 }
@@ -60,6 +60,7 @@ void LPRecognizer::optimize_binary_image(Mat &input, Mat &output)
     else
         output = input.clone();
 
+    // 优化字体粗细
     fix_font_weight(output);
 
     // 去除小部分面积
@@ -68,19 +69,31 @@ void LPRecognizer::optimize_binary_image(Mat &input, Mat &output)
     tmpImage = output(cv::Rect(round(input.cols*0.3), 0, input.cols - round(input.cols*0.3), input.rows));
     bwareaopen(tmpImage, 150);
 
-    projection(output,H_projection,LPR_Horizontal);
-    projection(output,V_projection,LPR_Vertical);
-//    qDebug() << H_projection.ptr<int>(0)[40] << V_projection.ptr<int>(0)[40];
-
-
+    //修正边框
+    fix_frame(output);
 }
 
 void LPRecognizer::fix_frame(Mat &input)
 {
+    int x1, x2, y1, y2;
+    projection(input,H_projection,LPR_HORIZONTAL);
+//    std::cout << H_projection;
+    get_horizontal_segmentation_value(H_projection,input.cols,y1,y2);
+//    qDebug() << y1 << y2;
+    input = input(Rect(0,y1,input.cols,y2-y1));
+    projection(input,V_projection,LPR_VERTICAL);
+//    qDebug() << H_projection.ptr<int>(0)[40] << V_projection.ptr<int>(0)[40];
+    get_vertical_segmentation_value(V_projection,x1,x2);
+//    qDebug() << x1 << x2;
+    input = input(Rect(x1,0,x2-x1,input.rows));
+}
+
+void LPRecognizer::character_segmentation(const Mat &input, Mat *output_array)
+{
 
 }
 
-void LPRecognizer::segment(const Mat &input, Mat *output_array)
+void LPRecognizer::force_character_segmentation(const Mat &input, Mat *output_array)
 {
 
 }
@@ -160,7 +173,7 @@ void LPRecognizer::projection(const Mat &input, Mat &data, int direction)
 {
     Mat temp = input / 255;
     // 水平
-    if(direction == LPR_Horizontal)
+    if(direction == LPR_HORIZONTAL)
     {
         data = Mat::zeros(1,temp.rows,CV_32SC1);
         for(int i=0;i<temp.rows;i++)
@@ -178,5 +191,97 @@ void LPRecognizer::projection(const Mat &input, Mat &data, int direction)
                 data.ptr<int>(0)[i] += (int)temp.ptr<uchar>(j)[i];
 //        qDebug() << data.ptr<int>(0)[40];
     }
+}
+
+void LPRecognizer::get_horizontal_segmentation_value(const Mat &H_projection, const int &image_width, int &y1, int &y2)
+{
+    // 减少循环中if判别次数
+    bool is_value_got = false;
+    int n = H_projection.cols;
+    int t1, t2;
+    for (int i = round(n*0.25); i > 0; i--)
+    {
+        t1 = H_projection.ptr<int>(0)[i];
+        t2 = H_projection.ptr<int>(0)[i-1];
+        if ((t1 > round(image_width*0.2) && t2 <= round(image_width*0.2)) || t1 > round(image_width*0.7))
+        {
+            y1 = i;
+            is_value_got = true;
+            break;
+        }
+    }
+    if(!is_value_got)
+    {
+        if (H_projection.ptr<int>(0)[0] > H_projection.ptr<int>(0)[1])
+            y1 = 1;
+        else
+            y1 = 0;
+    }
+
+    is_value_got = false;
+    for (int i = round(n*0.7); i <= n; i++)
+    {
+        t1 = H_projection.ptr<int>(0)[i];
+        t2 = H_projection.ptr<int>(0)[i-1];
+        if ((t1 <= round(image_width*0.2) && t2 > round(image_width*0.2)) || t1 > round(image_width*0.7))
+        {
+            y2 = i - 1;
+            is_value_got = true;
+            break;
+        }
+    }
+    if(!is_value_got)
+    {
+        if (H_projection.ptr<int>(0)[image_width] > H_projection.ptr<int>(0)[image_width-1])
+            y2 = n - 2;
+        else
+            y2 = n - 1;
+    }
+}
+
+void LPRecognizer::get_vertical_segmentation_value(const Mat &V_projiction, int &x1, int &x2)
+{
+    // 未检查 未优化
+    bool is_value_got = false;
+    int W[2] ={0,0};
+    int edge_count = 2;
+    int n = V_projiction.cols;
+    int t1, t2;
+    for (int i = round(n*0.2); i > 0; i--)
+    {
+        t1 = V_projiction.ptr<int>(0)[i];
+        t2 = V_projiction.ptr<int>(0)[i+1];
+        if ((edge_count == 2) && (t1 > 2 && t2 <= 2))
+        {
+            W[edge_count - 1] = i + 1;
+            edge_count -= 1;
+        }
+        else if (edge_count == 1 && t1 <= 2 && t2 > 2)
+        {
+            W[edge_count - 1] = i + 1;
+            edge_count -= 1;
+        }
+        else if (edge_count == 0 && W[1] - W[0] >= n*0.1)
+            break;
+        else if (edge_count == 0 && W[1] - W[0] < n*0.1)
+            edge_count += 1;
+        else if (i == 1 && edge_count == 1)
+            W[0] = 0;
+    }
+    x1 = W[0];
+
+    for (int i = round(n*0.9); i < n - 1; i++)
+    {
+        t1 = V_projiction.ptr<int>(0)[i];
+        t2 = V_projiction.ptr<int>(0)[i+1];
+        if (t1 > 4 && t2 <= 4)
+        {
+            x2 = i;
+            is_value_got = true;
+            break;
+        }
+    }
+    if(!is_value_got)
+        x2 = n;
 }
 

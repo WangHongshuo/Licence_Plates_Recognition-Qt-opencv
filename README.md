@@ -1,4 +1,4 @@
-# Qt-Licence-Plates-Recognition
+# Licence Plates Recognition based on Qt and opencv. 
 Translated from the Matlab vision: https://github.com/WangHongshuo/Licence-Plates-Recognition-Matlab
 
 I can upload files again after nearly 11 months due to the unstable network.

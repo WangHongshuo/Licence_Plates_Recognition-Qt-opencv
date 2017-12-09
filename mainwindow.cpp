@@ -69,6 +69,7 @@ void MainWindow::on_open_img_clicked()
         //imshow("2",input);
         //二值化
         binary(input);
+
         //imshow("3",input);
         img = cvMat2QImage(input);
         img = img.scaled(ui->ori_binarization->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
@@ -104,19 +105,23 @@ void MainWindow::on_open_img_clicked()
         bwareaopen(tmpImage, 150);
 //        imshow("1",input);
 //        imshow("2",tmpImage);
-
-        Mat H = H_Shadwo(input,1);
-        Mat V = V_Shadwo(input,1);
-        qDebug() << H.ptr<ushort>(0)[40] << V.ptr<ushort>(0)[40];
+//        Mat temp111 = recognizer.fixed_img - input;
+//        qDebug() << sum(temp111).val[0];
+        Mat H = H_Shadwo(input,0);
+//        std::cout << H;
+        Mat V = V_Shadwo(input,0);
+//        qDebug() << H.ptr<ushort>(0)[40] << V.ptr<ushort>(0)[40];
         //
         //
         int H1 = H1_cut_value(H, input);
         int H2 = H2_cut_value(H, input);
+//        qDebug() << H1 << H2;
         input = input(cv::Rect(0, H1, input.cols,H2 - H1));
         V = V_Shadwo(input,0,"1");
         //
         int W1 = W1_cut_value(V);
         int W2 = W2_cut_value(V);
+//        qDebug() << W1 << W2;
         input = input(Rect(W1, 0, W2 - W1, input.rows));
         //
         img = cvMat2QImage(input);

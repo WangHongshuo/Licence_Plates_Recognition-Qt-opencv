@@ -12,7 +12,7 @@ using namespace cv;
 class LPRecognizer
 {
 public:
-    enum{LPR_Horizontal, LPR_Vertical};
+    enum{LPR_HORIZONTAL, LPR_VERTICAL};
 
     LPRecognizer();
     LPRecognizer(Mat &input);
@@ -26,7 +26,8 @@ private:
     void pre_process(const Mat &input, Mat &output);
     void optimize_binary_image(Mat &input, Mat &output);
     void fix_frame(Mat &input);
-    void segment(const Mat &input, Mat *output_array);
+    void character_segmentation(const Mat &input, Mat *output_array);
+    void force_character_segmentation(const Mat &input, Mat *output_array);
     void recognize(const Mat *input_array,QString &ans,double *cov_ans);
 
     void fix_size(Mat &input);
@@ -35,6 +36,8 @@ private:
     void fix_font_weight(Mat &input);
     void bwareaopen(Mat &input, int n);
     void projection(const Mat &input, Mat &data, int direction);
+    void get_horizontal_segmentation_value(const Mat &H_projection, const int &image_width, int &y1, int &y2);
+    void get_vertical_segmentation_value(const Mat &V_projiction, int &x1, int &x2);
     Mat input_img;
     Mat H_projection, V_projection;
 
