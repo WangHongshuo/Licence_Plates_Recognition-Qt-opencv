@@ -20,8 +20,9 @@ public:
     Mat pre_processed_img;
     Mat fixed_img;
     Mat character[7];
-    QString recognized_character;
-    float conv_value[7];
+    QString recognized_character[7];
+    QString recognized_Licence_Plate;
+    float corr2_value[7] = {0.0};
 
 
 private:
@@ -32,7 +33,7 @@ private:
     void fix_frame(Mat &input);
     void character_segmentation(const Mat &input, Mat (&character)[7]);
     void force_character_segmentation(const int image_width, int (&W)[15]);
-    void recognize(const Mat *input_array,QString &ans,double *cov_ans);
+    void recognize_characters(Mat (&character)[7], QString (&ans)[7], float (&corr2_value)[7]);
 
     void fix_size(Mat &input);
     void binary(Mat &input);
@@ -42,6 +43,8 @@ private:
     void projection(const Mat &input, Mat &data, int direction);
     void get_horizontal_segmentation_value(const Mat &H_projection, const int &image_width, int &y1, int &y2);
     void get_vertical_segmentation_value(const Mat &V_projiction, int &x1, int &x2);
+    void character_optimization(Mat &input, const int &character_index);
+    void feature_match(const Mat &input, const int input_index, int &output_index);
 
     Mat input_img;
     Mat H_projection, V_projection;

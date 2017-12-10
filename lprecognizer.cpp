@@ -80,13 +80,19 @@ void LPRecognizer::start_process()
     }
     else
     {
+        recognized_Licence_Plate.clear();
         pre_process(input_img,pre_processed_img);
         imshow("pre",pre_processed_img);
         optimize_binary_image(pre_processed_img,fixed_img);
         imshow("fixed",fixed_img);
         character_segmentation(fixed_img,character);
+//        for(int i=0;i<7;i++)
+//            imshow((QString::number(i)).toStdString(),character[i]);
+        recognize_characters(character,recognized_character,corr2_value);
         for(int i=0;i<7;i++)
-            imshow((QString::number(i)).toStdString(),character[i]);
+            recognized_Licence_Plate += recognized_character[i];
+        qDebug() << recognized_Licence_Plate;
+
     }
 
 }
@@ -230,8 +236,87 @@ void LPRecognizer::force_character_segmentation(int image_width, int (&W)[15])
     }
 }
 
-void LPRecognizer::recognize(const Mat *input_array, QString &ans, double *cov_ans)
+void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], float (&corr2_value)[7])
 {
+    Mat result = Mat(1, 1, CV_32FC1);
+    int index = 0;
+    for (int i = 0; i < 7; i++)
+    {
+        // 直接判定特殊情况下的数字1
+        if (double(character[i].cols) / double(character[i].rows) < 0.3 && i > 0)
+        {
+            ans[i] = "1";
+            corr2_value[i] = -1.0;
+            continue;
+        }
+        character_optimization(character[i],i);
+        if (i == 0)
+        {
+            //cn[0]和ChineseCharacter[0]为空，脚标+1
+            resize(character[i], character[i], Size(48, 84), 3);
+            binary(character[i]);
+            for (int j = 0; j < 38; j++)
+            {
+                matchTemplate(character[i], ChineseCharacter[j+1], result, TM_CCOEFF_NORMED);
+                if(corr2_value[i] < result.ptr<float>(0)[0])
+                {
+                    corr2_value[i] = result.ptr<float>(0)[0];
+                    index = j;
+                }
+            }
+            ans[i] = CC_character[index + 1];
+            //            qDebug() << ans[i] << corr2_value[i];
+            continue;
+        }
+        else
+        {
+            resize(character[i], character[i], Size(24, 42), 3);
+            binary(character[i]);
+            // 车牌第二位不为数字
+            if(i == 1)
+            {
+                for (int j = 10; j < 36; j++)
+                {
+                    matchTemplate(character[i], NumberLetter[j], result, TM_CCORR_NORMED);
+                    if(corr2_value[i] < result.ptr<float>(0)[0])
+                    {
+                        corr2_value[i] = result.ptr<float>(0)[0];
+                        index = j;
+                    }
+                }
+                if(index == 13 || index == 23)
+                {
+                    if(i == 1)
+                    {
+                        feature_match(character[i],13,index);
+                        if(index == 0 && i == 1)
+                            index = 23;
+                    }
+                }
+                ans[i] = NL_character[index];
+                qDebug() << ans[i] << corr2_value[i];
+                continue;
+            }
+            else
+            {
+                for (int j = 0; j < 36; j++)
+                {
+                    matchTemplate(character[i], NumberLetter[j], result, TM_CCORR_NORMED);
+                    if(corr2_value[i] < result.ptr<float>(0)[0])
+                    {
+                        corr2_value[i] = result.ptr<float>(0)[0];
+                        index = j;
+                    }
+                }
+                if(index == 0 || index == 13)
+                {
+                    feature_match(character[i],index,index);
+                }
+                ans[i] = NL_character[index];
+                qDebug() << ans[i] << corr2_value[i];
+            }
+        }
+    }
 
 }
 
@@ -415,5 +500,116 @@ void LPRecognizer::get_vertical_segmentation_value(const Mat &V_projiction, int 
     }
     if(!is_value_got)
         x2 = n;
+}
+
+void LPRecognizer::character_optimization(Mat &input, const int &character_index)
+{
+    double k1, k2;
+    int t1, t2, p1, p2;
+    Mat temp_projection;
+    // 水平
+    if(character_index == 0)
+    {
+        k1 = 0.15;
+        k2 = 0.85;
+    }
+    else
+    {
+        k1 = 0.4;
+        k2 = 0.6;
+    }
+    projection(input,temp_projection,LPR_HORIZONTAL);
+    for(int i = round(input.rows*k1); i != -1; i--)
+    {
+        t1 = temp_projection.ptr<int>(0)[i];
+        t2 = temp_projection.ptr<int>(0)[i+1];
+        if (t1 <= 3 && t2 > 3)
+        {
+            p1 = i + 1;
+            break;
+        }
+        else if (i == 0)
+        {
+            p1 = 0;
+        }
+    }
+    for(int i = round(input.rows*k2); i < input.rows-1; i++)
+    {
+        t1 = temp_projection.ptr<int>(0)[i];
+        t2 = temp_projection.ptr<int>(0)[i+1];
+        if (t1 >= 3 && t2 < 3)
+        {
+            p2 = i;
+            break;
+        }
+        else if (i == input.rows - 2)
+        {
+            p2 = input.rows;
+        }
+    }
+    // 找到裁剪点则进行裁剪
+    if(p1 != 0 && p2 != input.rows)
+        input = input(Rect(0, p1,input.cols , p2 - p1));
+    // 垂直
+    if (character_index == 0)
+    {
+        k1 = 0.2;
+        k2 = 0.9;
+    }
+    else
+    {
+        k1 = 0.4;
+        k2 = 0.6;
+    }
+    projection(input,temp_projection,LPR_VERTICAL);
+    for (int i= round(input.cols*k1); i != -1; i--)
+    {
+        t1 = temp_projection.ptr<int>(0)[i];
+        t2 = temp_projection.ptr<int>(0)[i+1];
+        if (t1 <= 3 && t2 > 3)
+        {
+            p1 = i + 1;
+            break;
+        }
+        else if (i == 0)
+        {
+            p1 = 0;
+        }
+    }
+    for (int i = round(input.cols*k2); i < input.cols - 1; i++)
+    {
+        t1 = temp_projection.ptr<int>(0)[i];
+        t2 = temp_projection.ptr<int>(0)[i+1];
+        if (t1 >= 3 && t2 < 3)
+        {
+            p2 = i;
+            break;
+        }
+        else if (i == input.cols - 2)
+        {
+            p2 = input.cols;
+        }
+    }
+    if(p1 != 0 && p2 != input.cols)
+        input = input(Rect(p1, 0, p2 - 1, input.rows));
+}
+
+void LPRecognizer::feature_match(const Mat &input, const int input_index, int &output_index)
+{
+    // 特征匹配 有时间加入更多特征
+    if(input_index == 0 || input_index == 13)
+    {
+        Mat temp = input(Rect(1,0,4,42));
+        Mat temp_projection;
+        projection(temp,temp_projection,LPR_VERTICAL);
+        double min,max;
+        double* minp = &min;
+        double* maxp = &max;
+        minMaxIdx(temp_projection,minp,maxp);
+        if(max <= 40.0)
+            output_index = 0;
+        else
+            output_index =  13;
+    }
 }
 
