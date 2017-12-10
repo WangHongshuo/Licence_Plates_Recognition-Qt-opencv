@@ -25,12 +25,12 @@ public:
 
 
 private:
-    void load_character_template();
+    void initialization_data();
     void start_process();
     void pre_process(const Mat &input, Mat &output);
     void optimize_binary_image(Mat &input, Mat &output);
     void fix_frame(Mat &input);
-    void character_segmentation(const Mat &input, Mat *output_array);
+    void character_segmentation(const Mat &input, Mat (&character)[7]);
     void force_character_segmentation(const int image_width, int (&W)[15]);
     void recognize(const Mat *input_array,QString &ans,double *cov_ans);
 
@@ -46,9 +46,9 @@ private:
     Mat input_img;
     Mat H_projection, V_projection;
     Mat* NumberLetter = new Mat[36];
-    QString NL_character[36];
+    QString* NL_character;
     Mat* ChineseCharacter = new Mat[39];
-    QString CC_character[39];
+    QString* CC_character;
 
 
 };

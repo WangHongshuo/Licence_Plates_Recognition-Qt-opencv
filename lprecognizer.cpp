@@ -9,7 +9,7 @@
 
 LPRecognizer::LPRecognizer()
 {
-    load_character_template();
+    initialization_data();
 }
 
 LPRecognizer::~LPRecognizer()
@@ -26,7 +26,7 @@ void LPRecognizer::set_img(Mat &input)
     start_process();
 }
 
-void LPRecognizer::load_character_template()
+void LPRecognizer::initialization_data()
 {
     int i = 0;
     QString path = QCoreApplication::applicationDirPath();
@@ -39,7 +39,7 @@ void LPRecognizer::load_character_template()
         NumberLetter[i] = imread(ImgName,0);
         i++;
     }
-//    imshow("1",NumberLetter[1]);
+    //    imshow("1",NumberLetter[1]);
     i = 1;
     while (i < 39)
     {
@@ -49,25 +49,25 @@ void LPRecognizer::load_character_template()
         ChineseCharacter[i] = imread(ImgName,0);
         i++;
     }
-//    imshow("1",ChineseCharacter[1]);
-    QString temp[36] = {"0","1","2","3","4",
-                     "5","6","7","8","9",
-                     "A","B","C","D","E",
-                     "F","G","H","J","K",
-                     "L","M","N","O","P",
-                     "Q","R","S","T","U",
-                     "V","W","X","Y","Z",
-                     "7","O"};
-    NL_character = temp;
-//    CC_character = {" ","¾©","½ò","»¦","Óå",
-//                    "¼½","Ô¥","ÔÆ","ÁÉ","ºÚ",
-//                    "Ïæ","Íî","Â³","ËÕ","¸Ó",
-//                    "Õã","ÔÁ","¶õ","¹ğ","¸Ê",
-//                    "½ú","ÃÉ","ÉÂ","¼ª","Ãö",
-//                    "¹ó","Çà","²Ø","´¨","Äş",
-//                    "ĞÂ","Çí","ÔÆ","Óå","»¦",
-//                    "¼½","¾©","ÔÆ","²Ø","*" };
-    qDebug() << NL_character[2];
+    //    imshow("1",ChineseCharacter[1]);
+    // UTF-8 æ— BOM
+    NL_character = new QString[37]{"0","1","2","3","4",
+            "5","6","7","8","9",
+            "A","B","C","D","E",
+            "F","G","H","J","K",
+            "L","M","N","O","P",
+            "Q","R","S","T","U",
+            "V","W","X","Y","Z",
+            "7","O"};
+    CC_character = new QString[40] {" ","äº¬","æ´¥","æ²ª","æ¸",
+            "å†€","è±«","äº‘","è¾½","é»‘",
+            "æ¹˜","çš–","é²","è‹","èµ£",
+            "æµ™","ç²¤","é„‚","æ¡‚","ç”˜",
+            "æ™‹","è’™","é™•","å‰","é—½",
+            "è´µ","é’","è—","å·","å®",
+            "æ–°","ç¼","äº‘","æ¸","æ²ª",
+            "å†€","äº¬","äº‘","è—","*" };
+    //    qDebug() << NL_character[2] << CC_character[5];
 }
 
 void LPRecognizer::start_process()
@@ -85,15 +85,15 @@ void LPRecognizer::start_process()
         optimize_binary_image(pre_processed_img,fixed_img);
         imshow("fixed",fixed_img);
         character_segmentation(fixed_img,character);
-//        for(int i=0;i<7;i++)
-//            imshow((QString::number(i)).toStdString(),character[i]);
+        for(int i=0;i<7;i++)
+            imshow((QString::number(i)).toStdString(),character[i]);
     }
 
 }
 
 void LPRecognizer::pre_process(const Mat &input, Mat &output)
 {
-    // »Ò¶È»¯¡¢¹éÒ»»¯´óĞ¡¡¢ÖĞÖµÂË²¨¡¢¶şÖµ»¯
+    // ç°åº¦åŒ–ã€å½’ä¸€åŒ–å¤§å°ã€ä¸­å€¼æ»¤æ³¢ã€äºŒå€¼åŒ–
     if(input.channels() == 3)
         cvtColor(input,output,CV_BGR2GRAY);
     else if(input.channels() == 4)
@@ -105,22 +105,22 @@ void LPRecognizer::pre_process(const Mat &input, Mat &output)
 
 void LPRecognizer::optimize_binary_image(Mat &input, Mat &output)
 {
-    // ÅĞ¶Ï³µÅÆÑÕÉ«
+    // åˆ¤æ–­è½¦ç‰Œé¢œè‰²
     if (double(countNonZero(input)) / double(input.rows) / double(input.cols) > 0.5)
         reverse_binary_img(input,output);
     else
         output = input.clone();
 
-    // ÓÅ»¯×ÖÌå´ÖÏ¸
+    // ä¼˜åŒ–å­—ä½“ç²—ç»†
     fix_font_weight(output);
 
-    // È¥³ıĞ¡²¿·ÖÃæ»ı
+    // å»é™¤å°éƒ¨åˆ†é¢ç§¯
     Mat tmpImage = output(cv::Rect(0, 0, round(input.cols*0.3), input.rows));
     bwareaopen(tmpImage, 30);
     tmpImage = output(cv::Rect(round(input.cols*0.3), 0, input.cols - round(input.cols*0.3), input.rows));
     bwareaopen(tmpImage, 150);
 
-    //ĞŞÕı±ß¿ò
+    //ä¿®æ­£è¾¹æ¡†
     fix_frame(output);
 }
 
@@ -128,18 +128,18 @@ void LPRecognizer::fix_frame(Mat &input)
 {
     int x1, x2, y1, y2;
     projection(input,H_projection,LPR_HORIZONTAL);
-//    std::cout << H_projection;
+    //    std::cout << H_projection;
     get_horizontal_segmentation_value(H_projection,input.cols,y1,y2);
-//    qDebug() << y1 << y2;
+    //    qDebug() << y1 << y2;
     input = input(Rect(0,y1,input.cols,y2-y1));
     projection(input,V_projection,LPR_VERTICAL);
-//    qDebug() << H_projection.ptr<int>(0)[40] << V_projection.ptr<int>(0)[40];
+    //    qDebug() << H_projection.ptr<int>(0)[40] << V_projection.ptr<int>(0)[40];
     get_vertical_segmentation_value(V_projection,x1,x2);
-//    qDebug() << x1 << x2;
+    //    qDebug() << x1 << x2;
     input = input(Rect(x1,0,x2-x1,input.rows));
 }
 
-void LPRecognizer::character_segmentation(const Mat &input, Mat *output_array)
+void LPRecognizer::character_segmentation(const Mat &input, Mat (&character)[7])
 {
     projection(input,V_projection,LPR_VERTICAL);
     int W[15] = {0};
@@ -165,7 +165,6 @@ void LPRecognizer::character_segmentation(const Mat &input, Mat *output_array)
             }
             if (g < 13 && g > 2 && g % 2 == 1 && W[g + 2] - W[g + 1] < round(n*0.03))
             {
-                //Mat temp = input(Rect(W[i * 2], 0, W[i * 2 + 1] - W[i * 2], input.rows));
                 int sum_point = countNonZero(input(Rect(W[g + 1], 0, W[g + 2] - W[g + 1], input.rows)));
                 double k = double(sum_point) / double(input.rows) / double(W[g + 2] - W[g + 1]);
                 if (k < 0.75)
@@ -175,7 +174,7 @@ void LPRecognizer::character_segmentation(const Mat &input, Mat *output_array)
                     g += 2;
                 }
             }
-            //ÅĞ¶¨ºº×Ö¿í¶È
+            //åˆ¤å®šæ±‰å­—å®½åº¦
             if(g == 0 && W[1] - W[0] < round(n*0.09))
             {
                 g += 1;
@@ -193,7 +192,7 @@ void LPRecognizer::character_segmentation(const Mat &input, Mat *output_array)
             W[0] = 0;
         }
     }
-    // Ğ£Ñé·Ö¸îÊÇ·ñÓĞ´íÎó ÓĞÔòÇ¿ÖÆ·Ö¸î
+    // æ ¡éªŒåˆ†å‰²æ˜¯å¦æœ‰é”™è¯¯ æœ‰åˆ™å¼ºåˆ¶åˆ†å‰²
     if (W[14] == 0)
     {
         for (int i = 0; i < 7; i++)
@@ -204,11 +203,11 @@ void LPRecognizer::character_segmentation(const Mat &input, Mat *output_array)
             }
         }
     }
-//    qDebug() << W[3];
+    //    qDebug() << W[3];
     if(W[14] != 0)
         force_character_segmentation(V_projection.cols,W);
-//    qDebug() << W[3];
-    // ·Ö¸î
+    //    qDebug() << W[3];
+    // åˆ†å‰²
     for (int i = 0; i < 7; i++)
     {
         character[i] = input(Rect(W[i * 2], 0, W[i * 2 + 1] - W[i * 2], input.rows));
@@ -305,30 +304,30 @@ void LPRecognizer::bwareaopen(Mat &input, int n)
 void LPRecognizer::projection(const Mat &input, Mat &data, int direction)
 {
     Mat temp = input / 255;
-    // Ë®Æ½
+    // æ°´å¹³
     if(direction == LPR_HORIZONTAL)
     {
         data = Mat::zeros(1,temp.rows,CV_32SC1);
         for(int i=0;i<temp.rows;i++)
             for(int j=0;j<temp.cols;j++)
                 data.ptr<int>(0)[i] += (int)temp.ptr<uchar>(i)[j];
-//        qDebug() << data.ptr<int>(0)[40];
+        //        qDebug() << data.ptr<int>(0)[40];
 
     }
-    // ´¹Ö±
+    // å‚ç›´
     else
     {
         data = Mat::zeros(1,temp.cols,CV_32SC1);
         for(int i=0;i<temp.cols;i++)
             for(int j=0;j<temp.rows;j++)
                 data.ptr<int>(0)[i] += (int)temp.ptr<uchar>(j)[i];
-//        qDebug() << data.ptr<int>(0)[40];
+        //        qDebug() << data.ptr<int>(0)[40];
     }
 }
 
 void LPRecognizer::get_horizontal_segmentation_value(const Mat &H_projection, const int &image_width, int &y1, int &y2)
 {
-    // ¼õÉÙÑ­»·ÖĞifÅĞ±ğ´ÎÊı
+    // å‡å°‘å¾ªç¯ä¸­ifåˆ¤åˆ«æ¬¡æ•°
     bool is_value_got = false;
     int n = H_projection.cols;
     int t1, t2;
@@ -374,7 +373,7 @@ void LPRecognizer::get_horizontal_segmentation_value(const Mat &H_projection, co
 
 void LPRecognizer::get_vertical_segmentation_value(const Mat &V_projiction, int &x1, int &x2)
 {
-    // Î´¼ì²é Î´ÓÅ»¯
+    // æœªæ£€æŸ¥ æœªä¼˜åŒ–
     bool is_value_got = false;
     int W[2] ={0,0};
     int edge_count = 2;
