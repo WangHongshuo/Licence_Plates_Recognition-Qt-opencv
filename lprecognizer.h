@@ -8,6 +8,7 @@
 
 using namespace cv;
 
+// UFT-8 without BOM
 
 class LPRecognizer
 {
