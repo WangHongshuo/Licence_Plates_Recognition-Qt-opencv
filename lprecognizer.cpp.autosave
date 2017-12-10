@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <iostream>
 
+// UFT-8 without BOM
 
 LPRecognizer::LPRecognizer()
 {
