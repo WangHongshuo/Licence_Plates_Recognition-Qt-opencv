@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <opencv2/opencv.hpp>
 #include "lprecognizer.h"
+#include "ImageWidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,7 +24,12 @@ private slots:
 private:
     Ui::MainWindow *ui;
     cv::Mat image;
-    QImage img;
+
+    QImage temp;
+    QImage input_img;
+    QImage binary_img;
+    QImage optimized_img;
+
     LPRecognizer recognizer;
 };
 
