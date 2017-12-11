@@ -9,11 +9,11 @@
 using namespace cv;
 
 // UFT-8 without BOM
+enum{LPR_HORIZONTAL, LPR_VERTICAL};
 
 class LPRecognizer
 {
 public:
-    enum{LPR_HORIZONTAL, LPR_VERTICAL};
 
     LPRecognizer();
     ~LPRecognizer();

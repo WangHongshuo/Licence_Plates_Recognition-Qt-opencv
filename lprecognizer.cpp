@@ -2,8 +2,8 @@
 #include <QMessageBox>
 #include <QCoreApplication>
 #include <QString>
-#include <string>
 #include <QDebug>
+#include <QTime>
 #include <iostream>
 
 // UFT-8 without BOM
@@ -86,16 +86,16 @@ void LPRecognizer::start_process()
         std::fill(&corr2_value[0],&corr2_value[0]+7,0.0);
 		// 开始处理
         pre_process(input_img,pre_processed_img);
-        imshow("pre",pre_processed_img);
+//        imshow("pre",pre_processed_img);
         optimize_binary_image(pre_processed_img,fixed_img);
-        imshow("fixed",fixed_img);
+//        imshow("fixed",fixed_img);
         character_segmentation(fixed_img,character);
 //        for(int i=0;i<7;i++)
 //            imshow((QString::number(i)).toStdString(),character[i]);
         recognize_characters(character,recognized_character,corr2_value);
         for(int i=0;i<7;i++)
             recognized_Licence_Plate += recognized_character[i];
-        qDebug() << recognized_Licence_Plate;
+//        qDebug() << recognized_Licence_Plate;
 
     }
 
@@ -298,7 +298,7 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
                     }
                 }
                 ans[i] = NL_character[index];
-                qDebug() << ans[i] << corr2_value[i];
+//                qDebug() << ans[i] << corr2_value[i];
                 continue;
             }
             else
@@ -317,7 +317,7 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
                     feature_match(character[i],index,index);
                 }
                 ans[i] = NL_character[index];
-                qDebug() << ans[i] << corr2_value[i];
+//                qDebug() << ans[i] << corr2_value[i];
             }
         }
     }
