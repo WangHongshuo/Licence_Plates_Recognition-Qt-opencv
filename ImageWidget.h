@@ -21,9 +21,18 @@ public:
 	ImageWidget(QWidget *parent);
 	~ImageWidget();
 
-    void setImage(QImage* img, bool is_default = true)
+    void set_image(QImage* img, bool clone_image = false, bool is_default = true)
 	{
-        mp_img = img;
+        if(clone_image)
+        {
+            mp_img = new QImage;
+            qDebug() << "12121";
+            qDebug() << mp_img << img;
+            *mp_img = img->copy(0,0,img->width(),img->height());
+            qDebug() << "12121";
+        }
+        else
+            mp_img = img;
         is_image_load = true;
         if(is_default)
         {
@@ -45,30 +54,30 @@ public:
             update();
 		}
 	}
-	
-	void iniActions();	
-	void wheelEvent(QWheelEvent *e);
-	void mouseMoveEvent(QMouseEvent * e);
-	void mousePressEvent(QMouseEvent * e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void paintEvent(QPaintEvent *e);
-    void contextMenuEvent(QContextMenuEvent *e);
+    void only_show_image(bool flag = false);
 
 
 public slots:
-	void resetPos();
-	void zoomout();
-	void zoomin();
-	void translate(int x,int y);
-	void save();
-    void select();
-signals:
-
 
 private slots:
+    void reset_image();
+    void save();
+    void select();
     void is_select_mode_exit();
 
 private:
+
+    void zoom_out();
+    void zoom_in();
+    void translate(int x,int y);
+
+    void create_contextmenu();
+    void wheelEvent(QWheelEvent *e);
+    void mouseMoveEvent(QMouseEvent * e);
+    void mousePressEvent(QMouseEvent * e);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void paintEvent(QPaintEvent *e);
+    void contextMenuEvent(QContextMenuEvent *e);
 
     QImage *mp_img;
     double scalex;
@@ -82,6 +91,7 @@ private:
 	int mousePosY;
     bool is_image_load = false;
     bool is_select_mode = false;
+    bool is_only_show_image = false;
 
 	MouseDown mouse;
 	
@@ -89,7 +99,6 @@ private:
 	QAction* mActionSave;
     QAction* mActionSelect;
 
-	QAction* conditionDialation;
 	QMenu* mMenu;
 
 };

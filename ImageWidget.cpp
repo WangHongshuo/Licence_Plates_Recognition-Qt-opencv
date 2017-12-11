@@ -7,35 +7,41 @@ ImageWidget::ImageWidget(QWidget *parent):QWidget(parent),scalex(1),scaley(1),xt
 {
     is_image_load = false;
     is_select_mode = false;
-    iniActions();
+    create_contextmenu();
 }
 
 ImageWidget::~ImageWidget()
 {
     if(is_image_load)
         mp_img = NULL;
+    delete  mMenu;
+}
+
+void ImageWidget::only_show_image(bool flag)
+{
+    is_only_show_image = flag;
 }
 
 
 void ImageWidget::wheelEvent(QWheelEvent *e)
 {
-    if(is_image_load && !is_select_mode)
+    if(is_image_load && !is_select_mode && !is_only_show_image)
     {
         int numDegrees = e->delta();
         if(numDegrees > 0)
         {
-            zoomout();
+            zoom_out();
         }
         if(numDegrees < 0)
         {
-            zoomin();
+            zoom_in();
         }
         update();
     }
 }
 void ImageWidget::mousePressEvent(QMouseEvent *e)
 {
-    if(is_image_load)
+    if(is_image_load && !is_only_show_image)
     {
         switch(e->button())
         {
@@ -102,12 +108,13 @@ void ImageWidget::paintEvent(QPaintEvent *e)
 
 void ImageWidget::contextMenuEvent(QContextMenuEvent *e)
 {
-    mMenu->exec(QCursor::pos());
+    if(!is_only_show_image)
+        mMenu->exec(QCursor::pos());
     //mousePosX = QCursor::pos().x();
     //mousePosY = QCursor::pos().y();
 }
 
-void ImageWidget::resetPos()
+void ImageWidget::reset_image()
 {
     xtranslate = 0;
     ytranslate = 0;
@@ -118,7 +125,7 @@ void ImageWidget::resetPos()
     update();
 }
 
-void ImageWidget::zoomout()
+void ImageWidget::zoom_out()
 {
     if(scalex<=12&&scaley<=12)
     {
@@ -128,7 +135,7 @@ void ImageWidget::zoomout()
     update();
 }
 
-void ImageWidget::zoomin()
+void ImageWidget::zoom_in()
 {
     if(scalex>=0.05&&scaley>=0.05)
     {
@@ -152,18 +159,19 @@ void ImageWidget::select()
         m->xtranslate = xtranslate;
         m->ytranslate = ytranslate;
         m->show();
+
     }
 }
 
 
-void ImageWidget::iniActions()
+void ImageWidget::create_contextmenu()
 {
     mMenu = new QMenu();
     mActionResetPos = mMenu->addAction(tr("重置"));
     mActionSave		= mMenu->addAction(tr("另存为"));
     mActionSelect   = mMenu->addAction(tr("截取"));
 
-    connect(mActionResetPos,SIGNAL(triggered()),this,SLOT(resetPos()));
+    connect(mActionResetPos,SIGNAL(triggered()),this,SLOT(reset_image()));
     connect(mActionSave,SIGNAL(triggered()),this,SLOT(save()));
     connect(mActionSelect,SIGNAL(triggered()),this,SLOT(select()));
 }

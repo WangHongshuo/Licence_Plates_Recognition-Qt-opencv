@@ -48,22 +48,20 @@ void MainWindow::on_open_img_clicked()
         recognizer.set_img(image);
 //        qDebug() << a.elapsed();
         input_img = Mat2QImage(image);
-        ui->show_input_img->setImage(&input_img);
+        ui->show_input_img->set_image(&input_img);
 
         binary_img = Mat2QImage(recognizer.pre_processed_img);
-        ui->show_binary_img->setImage(&binary_img);
+        ui->show_binary_img->set_image(&binary_img);
 
         optimized_img = Mat2QImage(recognizer.fixed_img);
-        ui->show_optimized_img->setImage(&optimized_img);
+        ui->show_optimized_img->set_image(&optimized_img);
 
         for(int i = 0;i < 7;i++)
         {
             temp = Mat2QImage(recognizer.character[i]);
-            QLabel *label = findChild<QLabel*>("c"+QString::number(i+1));
-            temp = temp.scaled(label->size(),Qt::KeepAspectRatio,Qt::SmoothTransformation);
-            label->setAlignment(Qt::AlignCenter);
-            label->clear();
-            label->setPixmap(QPixmap::fromImage(temp));
+//            qDebug() << &temp << temp.data_ptr();
+            ImageWidget* show_character = findChild<ImageWidget*>("show_character_"+QString::number(i+1));
+            show_character->set_image(&temp);
         }
 
         ui->ans->setText(recognizer.recognized_Licence_Plate);

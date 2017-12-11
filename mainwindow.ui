@@ -106,223 +106,6 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="c5">
-    <property name="geometry">
-     <rect>
-      <x>442</x>
-      <y>491</y>
-      <width>48</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="c6">
-    <property name="geometry">
-     <rect>
-      <x>529</x>
-      <y>491</y>
-      <width>48</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="c7">
-    <property name="geometry">
-     <rect>
-      <x>616</x>
-      <y>491</y>
-      <width>48</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="c2">
-    <property name="geometry">
-     <rect>
-      <x>181</x>
-      <y>491</y>
-      <width>48</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="c1">
-    <property name="geometry">
-     <rect>
-      <x>94</x>
-      <y>491</y>
-      <width>48</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="c3">
-    <property name="geometry">
-     <rect>
-      <x>268</x>
-      <y>491</y>
-      <width>48</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="c4">
-    <property name="geometry">
-     <rect>
-      <x>355</x>
-      <y>491</y>
-      <width>48</width>
-      <height>84</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>48</width>
-      <height>84</height>
-     </size>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QLabel" name="text_0">
     <property name="geometry">
      <rect>
@@ -362,15 +145,92 @@
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;优化后&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <zorder>layoutWidget</zorder>
+   <widget class="ImageWidget" name="show_character_1" native="true">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>490</y>
+      <width>48</width>
+      <height>84</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="ImageWidget" name="show_character_2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>490</y>
+      <width>48</width>
+      <height>84</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="ImageWidget" name="show_character_3" native="true">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>490</y>
+      <width>48</width>
+      <height>84</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="ImageWidget" name="show_character_4" native="true">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>500</y>
+      <width>48</width>
+      <height>84</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="ImageWidget" name="show_character_5" native="true">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>500</y>
+      <width>48</width>
+      <height>84</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="ImageWidget" name="show_character_6" native="true">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>500</y>
+      <width>48</width>
+      <height>84</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="ImageWidget" name="show_character_7" native="true">
+    <property name="geometry">
+     <rect>
+      <x>620</x>
+      <y>500</y>
+      <width>48</width>
+      <height>84</height>
+     </rect>
+    </property>
+   </widget>
+   <zorder>text_0</zorder>
+   <zorder>text_1</zorder>
+   <zorder>text_2</zorder>
    <zorder>open_img</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
    <zorder>label</zorder>
    <zorder>show_input_img</zorder>
    <zorder>show_binary_img</zorder>
    <zorder>show_optimized_img</zorder>
+   <zorder>show_character_1</zorder>
+   <zorder>show_character_2</zorder>
+   <zorder>show_character_3</zorder>
+   <zorder>show_character_4</zorder>
+   <zorder>show_character_5</zorder>
+   <zorder>show_character_6</zorder>
+   <zorder>show_character_7</zorder>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>

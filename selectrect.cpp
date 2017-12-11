@@ -6,16 +6,24 @@ SelectRect::SelectRect(QWidget *parent) : QWidget(parent)
 {
     image = new QImage;
     is_image_load = false;
+
+    // 初始化右键菜单
+    subMenu = new QMenu();
+    subActionReset = subMenu->addAction(tr("重选"));
+    subActionSave = subMenu->addAction(tr("另存为"));
+    subActionExit = subMenu->addAction(tr("退出"));
+    connect(subActionExit,SIGNAL(triggered()),this,SLOT(select_exit()));
+    connect(subActionSave,SIGNAL(triggered()),this,SLOT(cut_img()));
+    connect(subActionReset,SIGNAL(triggered()),this,SLOT(select_reset()));
     // 关闭后释放资源
     this->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 SelectRect::~SelectRect()
 {
-    if(is_image_load)
-        delete image;
+    delete image;
+    delete subMenu;
 }
-
 
 void SelectRect::paintEvent(QPaintEvent *event)
 {
@@ -83,16 +91,7 @@ void SelectRect::mouseMoveEvent(QMouseEvent *event)
 
 void SelectRect::contextMenuEvent(QContextMenuEvent *event)
 {
-    QCursor cur=this->cursor();
-    subMenu = new QMenu();
-    subActionReset = subMenu->addAction(tr("重选"));
-    subActionSave = subMenu->addAction(tr("另存为"));
-    subActionExit = subMenu->addAction(tr("退出"));
-    connect(subActionExit,SIGNAL(triggered()),this,SLOT(select_exit()));
-    connect(subActionSave,SIGNAL(triggered()),this,SLOT(cut_img()));
-    connect(subActionReset,SIGNAL(triggered()),this,SLOT(select_reset()));
-    subMenu->exec(cur.pos());
-    delete subMenu;
+    subMenu->exec(QCursor::pos());
 }
 
 void SelectRect::select_exit()
