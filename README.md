@@ -29,3 +29,9 @@ ready to rebuild this shit. It will take 100ms to get the output.
 
 准备抽时间重写这个了，或许界面也应该重写一下吧？目前处理一张图片要100ms。
 
+2017.12.11
+
+finished rebuilding and saved the old version files. It will take 70ms to get the output, it can be improved after checking the most time-consuming part.
+
+完成重写，备份旧版本文件，目前处理一张图片要70ms左右，应该还可以更快，检查耗时的部分。
+
