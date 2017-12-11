@@ -14,7 +14,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    func.cpp \
     lprecognizer.cpp \
     mat_qimage_convert.cpp
 
@@ -25,7 +24,6 @@ LIBS += -L D:/opencv3.3.1/opencv_use/lib/libopencv_*.a
 
 
 HEADERS  += mainwindow.h \
-    func.h \
     lprecognizer.h \
     mat_qimage_convert.h
 

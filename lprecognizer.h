@@ -50,8 +50,8 @@ private:
     Mat input_img;
     Mat H_projection, V_projection;
     Mat* NumberLetter = new Mat[36];
-    QString* NL_character;
     Mat* ChineseCharacter = new Mat[39];
+    QString* NL_character;
     QString* CC_character;
 
 

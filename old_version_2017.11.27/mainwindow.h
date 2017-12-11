@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <opencv2/opencv.hpp>
-#include "lprecognizer.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -23,7 +23,6 @@ private:
     Ui::MainWindow *ui;
     cv::Mat image;
     QImage img;
-    LPRecognizer recognizer;
 };
 
 #endif // MAINWINDOW_H

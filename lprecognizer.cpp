@@ -29,6 +29,9 @@ void LPRecognizer::set_img(Mat &input)
 
 void LPRecognizer::initialization_data()
 {
+//    NumberLetter = new Mat[36];
+//    ChineseCharacter = new Mat[39];
+
     int i = 0;
     QString path = QCoreApplication::applicationDirPath();
     QString Q_ImgName;
@@ -503,7 +506,7 @@ void LPRecognizer::get_vertical_segmentation_value(const Mat &V_projiction, int 
         }
     }
     if(!is_value_got)
-        x2 = n;
+        x2 = n - 1;
 }
 
 void LPRecognizer::character_optimization(Mat &input, const int &character_index)
@@ -522,6 +525,7 @@ void LPRecognizer::character_optimization(Mat &input, const int &character_index
         k1 = 0.4;
         k2 = 0.6;
     }
+
     projection(input,temp_projection,LPR_HORIZONTAL);
     for(int i = round(input.rows*k1); i != -1; i--)
     {
@@ -548,11 +552,12 @@ void LPRecognizer::character_optimization(Mat &input, const int &character_index
         }
         else if (i == input.rows - 2)
         {
-            p2 = input.rows;
+            p2 = input.rows - 1;
         }
     }
+
     // 找到裁剪点则进行裁剪
-    if(p1 != 0 && p2 != input.rows)
+    if(!(p1 == 0 && p2 == input.rows - 1))
         input = input(Rect(0, p1,input.cols , p2 - p1));
     // 垂直
     if (character_index == 0)
@@ -591,11 +596,12 @@ void LPRecognizer::character_optimization(Mat &input, const int &character_index
         }
         else if (i == input.cols - 2)
         {
-            p2 = input.cols;
+            p2 = input.cols - 1;
         }
     }
-    if(p1 != 0 && p2 != input.cols)
-        input = input(Rect(p1, 0, p2 - 1, input.rows));
+
+    if(!(p1 == 0 && p2 == input.cols - 1))
+        input = input(Rect(p1, 0, p2 - p1, input.rows));
 }
 
 void LPRecognizer::feature_match(const Mat &input, const int input_index, int &output_index)

@@ -42,8 +42,8 @@ void MainWindow::on_open_img_clicked()
     }
     else
     {
-//        QTime a;
-//        a.start();
+        QTime a;
+        a.start();
 
         recognizer.set_img(image);
 //        qDebug() << a.elapsed();
@@ -85,7 +85,7 @@ void MainWindow::on_open_img_clicked()
         }
 
         ui->ans->setText(recognizer.recognized_Licence_Plate);
-
+        qDebug() << a.elapsed();
     } 
 }
 

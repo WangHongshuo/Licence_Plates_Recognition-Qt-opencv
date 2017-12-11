@@ -225,13 +225,13 @@ int H2_cut_value(Mat &H, Mat &input)
             H2 = i - 1;
             return H2;
         }
-        else if (i ==n)
+        else if (i == n)
         {
-            H2 = n;
+            H2 = n - 1;
             return H2;
         }
     }
-    return n;
+    return n - 1;
 }
 
 int W1_cut_value(Mat &V)
@@ -273,7 +273,7 @@ int W2_cut_value(Mat &V)
         if (t1 > 4 && t2 <= 4)
             return i;
     }
-    return V.cols;
+    return V.cols - 1;
 }
 
 vector<int> seg_character(Mat &V,Mat &input)
@@ -529,7 +529,7 @@ void character_cut_V(Mat &src,int k)
         }
         else if (i == src.rows - 2)
         {
-            H2 = src.rows;
+            H2 = src.rows - 1;
         }
     }
     src = src(Rect(0, H1,src.cols , H2 - H1));
@@ -575,7 +575,7 @@ void character_cut_H(Mat &src,int k)
         }
         else if (i == src.cols - 2)
         {
-            W2 = src.cols;
+            W2 = src.cols - 1;
         }
     }
     src = src(Rect(W1, 0, W2 - W1, src.rows));

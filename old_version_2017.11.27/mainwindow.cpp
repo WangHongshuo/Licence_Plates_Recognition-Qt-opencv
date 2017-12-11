@@ -43,8 +43,8 @@ void MainWindow::on_open_img_clicked()
     }
     else
     {
-//        QTime a;
-//        a.start();
+        QTime a;
+        a.start();
 
         //
         //
@@ -179,7 +179,7 @@ void MainWindow::on_open_img_clicked()
             ans += result[i];
         }
         ui->ans->setText(ans);
-//        qDebug() << a.elapsed();
+        qDebug() << a.elapsed();
     } 
 }
 
