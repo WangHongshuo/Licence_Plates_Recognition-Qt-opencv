@@ -37,7 +37,7 @@ It will take 70ms to get the output(image size: 3086 * 887), it can be improved 
 
 完成重写，备份旧版本文件，目前处理3086 * 887大小图片要70ms左右（与上次测试图片相同），应该还可以更快，检查耗时的部分。
 
-2017.12.11
+2017.12.12
 
 fixed ImageWidget when code main program, added some new function, and designed UI, added a exception-handling function to recall initialization failure. 
 I will improve processing speed when I'm free, but now I need to do something very shit. :( 
