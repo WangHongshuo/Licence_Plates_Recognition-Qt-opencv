@@ -25,13 +25,21 @@ updated bwareaopen function and now it's similar to the one in matlab (relies on
 
 2017.12.05
 
-ready to rebuild this shit. It will take 100ms to get the output(image size: 3086 * 887).
+ready to rebuild this shit. 
+It will take 100ms to get the output(image size: 3086 * 887).
 
 准备抽时间重写这个了，或许界面也应该重写一下吧？目前处理3086 * 887大小图片要130ms。
 
 2017.12.11
 
-finished rebuilding and saved the old version files. It will take 70ms to get the output(image size: 3086 * 887), it can be improved after checking the most time-consuming part.
+finished rebuilding and saved the old version files. 
+It will take 70ms to get the output(image size: 3086 * 887), it can be improved after checking the most time-consuming part.
 
 完成重写，备份旧版本文件，目前处理3086 * 887大小图片要70ms左右（与上次测试图片相同），应该还可以更快，检查耗时的部分。
 
+2017.12.11
+
+fixed ImageWidget when code main program, added some new function, and designed UI, added a exception-handling function to recall initialization failure. 
+I will improve processing speed when I'm free, but now I need to do something very shit. :( 
+
+在写主程序时修改了ImageWidget，添加了一些功能，大致设计了一下UI，给LPRecognizer添加了一个异常处理（响应初始化失败事件）。有空再优处理速度，要去忙别的了。 :(

@@ -20,6 +20,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ImageWidget* show_character;
+    for(int i = 0;i < 7;i++)
+    {
+        show_character = findChild<ImageWidget*>("show_character_"+QString::number(i+1));
+        show_character->only_show_image(true);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -56,12 +62,16 @@ void MainWindow::on_open_img_clicked()
         optimized_img = Mat2QImage(recognizer.fixed_img);
         ui->show_optimized_img->set_image_with_pointer(&optimized_img);
         QImage temp;
+        ImageWidget* show_character;
+        QLabel* show_corr2_value;
         for(int i = 0;i < 7;i++)
         {
             temp = Mat2QImage(recognizer.character[i]);
 //            qDebug() << &temp << temp.data_ptr();
-            ImageWidget* show_character = findChild<ImageWidget*>("show_character_"+QString::number(i+1));
+            show_character = findChild<ImageWidget*>("show_character_"+QString::number(i+1));
             show_character->set_image_with_data(temp);
+            show_corr2_value = findChild<QLabel*>("show_correlation_value_"+QString::number(i+1));
+            show_corr2_value->setText(QString::number(recognizer.correlation_value[i]));
             show_character->only_show_image(true);
         }
         ui->ans->setText(recognizer.recognized_Licence_Plate);

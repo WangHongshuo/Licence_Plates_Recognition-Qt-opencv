@@ -41,6 +41,15 @@ void LPRecognizer::initialization_data()
         Q_ImgName = path + "/NumberLetter/" + QString::number(i) + ".bmp";
         ImgName = Q_ImgName.toStdString();
         NumberLetter[i] = imread(ImgName,0);
+        if(!NumberLetter[i].data)
+        {
+            QMessageBox msgBox(QMessageBox::Critical,
+                               ("LPRecognizer initialization failed!"),
+                               ("Can't load (.exe path)/NumberLetter/"+QString::number(i)+".bmp"));
+            msgBox.exec();
+            is_initialized = false;
+            break;
+        }
         i++;
     }
     //    imshow("1",NumberLetter[1]);
@@ -51,6 +60,15 @@ void LPRecognizer::initialization_data()
         Q_ImgName = path + "/ChineseCharacter/" + QString::number(i) + ".bmp";
         ImgName = Q_ImgName.toStdString();
         ChineseCharacter[i] = imread(ImgName,0);
+        if(!ChineseCharacter[i].data)
+        {
+            QMessageBox msgBox(QMessageBox::Critical,
+                               ("LPRecognizer initialization failed!"),
+                               ("Can't load (.exe path)/ChineseCharacter/"+QString::number(i)+".bmp"));
+            msgBox.exec();
+            is_initialized = false;
+            break;
+        }
         i++;
     }
     //    imshow("1",ChineseCharacter[1]);
@@ -82,11 +100,18 @@ void LPRecognizer::start_process()
         msgBox.setText("LPRecognizer::Image data is null!");
         msgBox.exec();
     }
+    else if(!is_initialized)
+    {
+        QMessageBox msgBox(QMessageBox::Critical,
+                           ("LPRecognizer initialization failed!"),
+                           ("Templates load error!"));
+        msgBox.exec();
+    }
     else
     {
 		// 清理
         recognized_Licence_Plate.clear();
-        std::fill(&corr2_value[0],&corr2_value[0]+7,0.0);
+        std::fill(&correlation_value[0],&correlation_value[0]+7,0.0);
 		// 开始处理
         pre_process(input_img,pre_processed_img);
 //        imshow("pre",pre_processed_img);
@@ -95,7 +120,7 @@ void LPRecognizer::start_process()
         character_segmentation(fixed_img,character);
 //        for(int i=0;i<7;i++)
 //            imshow((QString::number(i)).toStdString(),character[i]);
-        recognize_characters(character,recognized_character,corr2_value);
+        recognize_characters(character,recognized_character,correlation_value);
         for(int i=0;i<7;i++)
             recognized_Licence_Plate += recognized_character[i];
 //        qDebug() << recognized_Licence_Plate;
@@ -243,7 +268,7 @@ void LPRecognizer::force_character_segmentation(int image_width, int (&W)[15])
     }
 }
 
-void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], float (&corr2_value)[7])
+void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], float (&correlation_value)[7])
 {
     Mat result = Mat(1, 1, CV_32FC1);
     int index = 0;
@@ -253,7 +278,7 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
         if (double(character[i].cols) / double(character[i].rows) < 0.3 && i > 0)
         {
             ans[i] = "1";
-            corr2_value[i] = -1.0;
+            correlation_value[i] = -1.0;
             continue;
         }
         character_optimization(character[i],i);
@@ -265,14 +290,14 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
             for (int j = 0; j < 38; j++)
             {
                 matchTemplate(character[i], ChineseCharacter[j+1], result, TM_CCOEFF_NORMED);
-                if(corr2_value[i] < result.ptr<float>(0)[0])
+                if(correlation_value[i] < result.ptr<float>(0)[0])
                 {
-                    corr2_value[i] = result.ptr<float>(0)[0];
+                    correlation_value[i] = result.ptr<float>(0)[0];
                     index = j;
                 }
             }
             ans[i] = CC_character[index + 1];
-            //            qDebug() << ans[i] << corr2_value[i];
+            //            qDebug() << ans[i] << correlation_value[i];
             continue;
         }
         else
@@ -285,9 +310,9 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
                 for (int j = 10; j < 36; j++)
                 {
                     matchTemplate(character[i], NumberLetter[j], result, TM_CCORR_NORMED);
-                    if(corr2_value[i] < result.ptr<float>(0)[0])
+                    if(correlation_value[i] < result.ptr<float>(0)[0])
                     {
-                        corr2_value[i] = result.ptr<float>(0)[0];
+                        correlation_value[i] = result.ptr<float>(0)[0];
                         index = j;
                     }
                 }
@@ -301,7 +326,7 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
                     }
                 }
                 ans[i] = NL_character[index];
-//                qDebug() << ans[i] << corr2_value[i];
+//                qDebug() << ans[i] << correlation_value[i];
                 continue;
             }
             else
@@ -309,9 +334,9 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
                 for (int j = 0; j < 36; j++)
                 {
                     matchTemplate(character[i], NumberLetter[j], result, TM_CCORR_NORMED);
-                    if(corr2_value[i] < result.ptr<float>(0)[0])
+                    if(correlation_value[i] < result.ptr<float>(0)[0])
                     {
-                        corr2_value[i] = result.ptr<float>(0)[0];
+                        correlation_value[i] = result.ptr<float>(0)[0];
                         index = j;
                     }
                 }
@@ -320,7 +345,7 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
                     feature_match(character[i],index,index);
                 }
                 ans[i] = NL_character[index];
-//                qDebug() << ans[i] << corr2_value[i];
+//                qDebug() << ans[i] << correlation_value[i];
             }
         }
     }

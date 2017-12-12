@@ -23,7 +23,7 @@ public:
     Mat character[7];
     QString recognized_character[7];
     QString recognized_Licence_Plate;
-    float corr2_value[7];
+    float correlation_value[7] = {0.0};
 
 
 private:
@@ -34,7 +34,7 @@ private:
     void fix_frame(Mat &input);
     void character_segmentation(const Mat &input, Mat (&character)[7]);
     void force_character_segmentation(const int image_width, int (&W)[15]);
-    void recognize_characters(Mat (&character)[7], QString (&ans)[7], float (&corr2_value)[7]);
+    void recognize_characters(Mat (&character)[7], QString (&ans)[7], float (&correlation_value)[7]);
 
     void fix_size(Mat &input);
     void binary(Mat &input);
@@ -53,6 +53,7 @@ private:
     Mat* ChineseCharacter = new Mat[39];
     QString* NL_character;
     QString* CC_character;
+    bool is_initialized = true;
 
 
 };
