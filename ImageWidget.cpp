@@ -19,15 +19,16 @@ ImageWidget::~ImageWidget()
     delete  mMenu;
 }
 
-void ImageWidget::set_image_with_data(QImage img, bool always_initialization)
+void ImageWidget::set_image_with_data(QImage img,bool fit_widget, bool always_initialization)
 {
+    is_fit_widget_size = fit_widget;
     if(!is_image_cloned)
     {
         mp_img = new QImage;
         is_image_cloned = true;
     }
     *mp_img = img.copy(0,0,img.width(),img.height());
-//    qDebug() << mp_img->data_ptr() << img.data_ptr();
+    //    qDebug() << mp_img->data_ptr() << img.data_ptr();
     is_image_load = true;
     if(always_initialization)
         set_default_parameters();
@@ -35,8 +36,9 @@ void ImageWidget::set_image_with_data(QImage img, bool always_initialization)
     update();
 }
 
-void ImageWidget::set_image_with_pointer(QImage *img, bool always_initialization)
+void ImageWidget::set_image_with_pointer(QImage *img, bool fit_widget, bool always_initialization)
 {
+    is_fit_widget_size = fit_widget;
     mp_img = img;
     is_image_load = true;
     if(always_initialization)
@@ -100,7 +102,7 @@ void ImageWidget::mousePressEvent(QMouseEvent *e)
         default:
             mouse = No;
         }
-//        qDebug() << mouse;
+        //        qDebug() << mouse;
         //初次按键事件鼠标坐标
         mousePosX = e->x();
         mousePosY = e->y();
@@ -124,8 +126,8 @@ void ImageWidget::mouseMoveEvent(QMouseEvent *e)
         //xtranslate = e->x() - mousePosX;
         //ytranslate = e->y() - mousePosY;
 
-//        qDebug() << "e.mouseposX: " << mousePosX << "e.mouseposY: " << mousePosY;
-//        qDebug() << "e.x: " << e->x() << "e.y: " << e->y();
+        //        qDebug() << "e.mouseposX: " << mousePosX << "e.mouseposY: " << mousePosY;
+        //        qDebug() << "e.x: " << e->x() << "e.y: " << e->y();
         //相对移动坐标
         translate(e->x() - mousePosX,e->y() - mousePosY);
     }
@@ -145,8 +147,11 @@ void ImageWidget::paintEvent(QPaintEvent *e)
     painter.drawRect(0,0,this->width(),this->height());
     if(!is_image_load)
         return;
-    painter.drawImage(QPoint(xtranslate,ytranslate),mp_img->scaled(this->width()*scalex,this->height()*scaley,Qt::KeepAspectRatio));
-//    qDebug() << scalex;
+    if(is_fit_widget_size)
+        painter.drawImage(QPoint(xtranslate,ytranslate),mp_img->scaled(this->width()*scalex,this->height()*scaley,Qt::KeepAspectRatio));
+    else
+        painter.drawImage(QPoint(xtranslate,ytranslate),mp_img->scaled(mp_img->width()*scalex,mp_img->height()*scaley,Qt::KeepAspectRatio));
+    //    qDebug() << scalex;
 }
 
 void ImageWidget::contextMenuEvent(QContextMenuEvent *e)

@@ -21,8 +21,8 @@ public:
     ImageWidget(QWidget *parent);
 	~ImageWidget();
 
-    void set_image_with_data(QImage img, bool always_initialization = false);
-    void set_image_with_pointer(QImage* img ,bool always_initialization = false);
+    void set_image_with_data(QImage img, bool fit_widget = true, bool always_initialization = false);
+    void set_image_with_pointer(QImage* img , bool fit_widget = true, bool always_initialization = false);
     void clear();
     void only_show_image(bool flag = false);
 
@@ -62,6 +62,7 @@ private:
     bool is_select_mode = false;
     bool is_only_show_image = false;
     bool is_image_cloned = false;
+    bool is_fit_widget_size = true;
 
 	MouseDown mouse;
 	
