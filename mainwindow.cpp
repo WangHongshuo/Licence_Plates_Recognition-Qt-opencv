@@ -48,22 +48,22 @@ void MainWindow::on_open_img_clicked()
         recognizer.set_img(image);
 //        qDebug() << a.elapsed();
         input_img = Mat2QImage(image);
-        ui->show_input_img->set_image(&input_img);
+        ui->show_input_img->set_image_with_pointer(&input_img);
 
         binary_img = Mat2QImage(recognizer.pre_processed_img);
-        ui->show_binary_img->set_image(&binary_img);
+        ui->show_binary_img->set_image_with_pointer(&binary_img);
 
         optimized_img = Mat2QImage(recognizer.fixed_img);
-        ui->show_optimized_img->set_image(&optimized_img);
-
+        ui->show_optimized_img->set_image_with_pointer(&optimized_img);
+        QImage temp;
         for(int i = 0;i < 7;i++)
         {
             temp = Mat2QImage(recognizer.character[i]);
 //            qDebug() << &temp << temp.data_ptr();
             ImageWidget* show_character = findChild<ImageWidget*>("show_character_"+QString::number(i+1));
-            show_character->set_image(&temp);
+            show_character->set_image_with_data(temp);
+            show_character->only_show_image(true);
         }
-
         ui->ans->setText(recognizer.recognized_Licence_Plate);
         qDebug() << a.elapsed();
     } 

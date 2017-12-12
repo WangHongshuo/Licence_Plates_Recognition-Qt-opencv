@@ -18,44 +18,13 @@ class ImageWidget :
 {
 	Q_OBJECT
 public:
-	ImageWidget(QWidget *parent);
+    ImageWidget(QWidget *parent);
 	~ImageWidget();
 
-    void set_image(QImage* img, bool clone_image = false, bool is_default = true)
-	{
-        if(clone_image)
-        {
-            mp_img = new QImage;
-            qDebug() << "12121";
-            qDebug() << mp_img << img;
-            *mp_img = img->copy(0,0,img->width(),img->height());
-            qDebug() << "12121";
-        }
-        else
-            mp_img = img;
-        is_image_load = true;
-        if(is_default)
-        {
-            scalex = scaley = 1.0;
-            xtranslate = ytranslate = 0;
-            last_x_pos = last_y_pos = 0;
-        }
-        mouse = No;
-		update();
-	}
-
-	void clear()
-	{
-        if(is_image_load)
-		{
-            is_image_load = false;
-			//delete mp_img;
-            mp_img = NULL;
-            update();
-		}
-	}
+    void set_image_with_data(QImage img, bool always_initialization = false);
+    void set_image_with_pointer(QImage* img ,bool always_initialization = false);
+    void clear();
     void only_show_image(bool flag = false);
-
 
 public slots:
 
@@ -66,7 +35,7 @@ private slots:
     void is_select_mode_exit();
 
 private:
-
+    void set_default_parameters();
     void zoom_out();
     void zoom_in();
     void translate(int x,int y);
@@ -92,6 +61,7 @@ private:
     bool is_image_load = false;
     bool is_select_mode = false;
     bool is_only_show_image = false;
+    bool is_image_cloned = false;
 
 	MouseDown mouse;
 	

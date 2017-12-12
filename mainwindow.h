@@ -25,7 +25,6 @@ private:
     Ui::MainWindow *ui;
     cv::Mat image;
 
-    QImage temp;
     QImage input_img;
     QImage binary_img;
     QImage optimized_img;

@@ -14,8 +14,51 @@ ImageWidget::~ImageWidget()
 {
     if(is_image_load)
         mp_img = NULL;
+    if(is_image_cloned)
+        delete mp_img;
     delete  mMenu;
 }
+
+void ImageWidget::set_image_with_data(QImage img, bool always_initialization)
+{
+    if(!is_image_cloned)
+    {
+        mp_img = new QImage;
+        is_image_cloned = true;
+    }
+    *mp_img = img.copy(0,0,img.width(),img.height());
+//    qDebug() << mp_img->data_ptr() << img.data_ptr();
+    is_image_load = true;
+    if(always_initialization)
+        set_default_parameters();
+    mouse = No;
+    update();
+}
+
+void ImageWidget::set_image_with_pointer(QImage *img, bool always_initialization)
+{
+    mp_img = img;
+    is_image_load = true;
+    if(always_initialization)
+        set_default_parameters();
+    mouse = No;
+    update();
+}
+
+void ImageWidget::clear()
+{
+    if(is_image_load)
+    {
+        is_image_load = false;
+
+        if(is_image_cloned)
+            delete mp_img;
+        else
+            mp_img = NULL;
+        update();
+    }
+}
+
 
 void ImageWidget::only_show_image(bool flag)
 {
@@ -190,5 +233,12 @@ void ImageWidget::save()
 void ImageWidget::is_select_mode_exit()
 {
     is_select_mode = false;
-//    qDebug() << is_select_mode;
+    //    qDebug() << is_select_mode;
+}
+
+void ImageWidget::set_default_parameters()
+{
+    scalex = scaley = 1.0;
+    xtranslate = ytranslate = 0;
+    last_x_pos = last_y_pos = 0;
 }
