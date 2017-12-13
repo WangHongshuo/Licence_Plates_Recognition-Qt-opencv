@@ -11,24 +11,14 @@ Ahhhhhhhh, my English is also bad.
 
 这个程序从2016.11.10开始的，在2017.02.14结束的，是我第一个具备完整功能的程序，也是我0基础写出来的，在写的过程中真是学到了很多东西。用了Qt库写界面，opencv库处理图像。直接从Matlab脚本语言硬翻到C艹的，全是面向过程语言，但是可以工作，虽然有些时候会导致错误。因为是第一次写，所以写的很粗糙，我现在也改不动了，如果要改的话，那就重写好了。再重写我一定要写成类的形式，那个时候还没有类的概念。
 
-2017.09.21
+Log:
 
-fixed a bug in bwareaopen when using opencv3.3(it seems to be that findContours has some changes).
+2017.12.12
 
-升级到opencv3.3时修复了bwareaopen函数的错误(findContours函数在opencv3.3时好像发生了变换，不会对原图进行修改了)。
+fixed ImageWidget when code main program, added some new function, and designed UI, added a exception-handling function to recall initialization failure. 
+I will improve processing speed when I'm free, but now I need to do something very shit. :( 
 
-2017.11.27
-
-updated bwareaopen function and now it's similar to the one in matlab (relies on connectedComponentsWithStats function in opencv3.3.1).
-
-更新了bwareaopen函数，现在和matlab中的bwareaopen函数效果差不多了(依赖opencv3.3.1中的connectedComponentsWithStats函数）.
-
-2017.12.05
-
-ready to rebuild this shit. 
-It will take 100ms to get the output(image size: 3086 * 887).
-
-准备抽时间重写这个了，或许界面也应该重写一下吧？目前处理3086 * 887大小图片要130ms。
+在写主程序时修改了ImageWidget，添加了一些功能，大致设计了一下UI，给LPRecognizer添加了一个异常处理（响应初始化失败事件）。有空再优处理速度，要去忙别的了。 :(
 
 2017.12.11
 
@@ -37,9 +27,28 @@ It will take 70ms to get the output(image size: 3086 * 887), it can be improved 
 
 完成重写，备份旧版本文件，目前处理3086 * 887大小图片要70ms左右（与上次测试图片相同），应该还可以更快，检查耗时的部分。
 
-2017.12.12
+2017.12.05
 
-fixed ImageWidget when code main program, added some new function, and designed UI, added a exception-handling function to recall initialization failure. 
-I will improve processing speed when I'm free, but now I need to do something very shit. :( 
+ready to rebuild this shit. 
+It will take 100ms to get the output(image size: 3086 * 887).
 
-在写主程序时修改了ImageWidget，添加了一些功能，大致设计了一下UI，给LPRecognizer添加了一个异常处理（响应初始化失败事件）。有空再优处理速度，要去忙别的了。 :(
+准备抽时间重写这个了，或许界面也应该重写一下吧？目前处理3086 * 887大小图片要130ms。
+
+2017.11.27
+
+updated bwareaopen function and now it's similar to the one in matlab (relies on connectedComponentsWithStats function in opencv3.3.1).
+
+更新了bwareaopen函数，现在和matlab中的bwareaopen函数效果差不多了(依赖opencv3.3.1中的connectedComponentsWithStats函数）.
+
+2017.09.21
+
+fixed a bug in bwareaopen when using opencv3.3(it seems to be that findContours has some changes).
+
+升级到opencv3.3时修复了bwareaopen函数的错误(findContours函数在opencv3.3时好像发生了变换，不会对原图进行修改了)。
+
+
+
+
+
+
+
