@@ -13,6 +13,13 @@ Ahhhhhhhh, my English is also bad.
 
 Log:
 
+2017.12.15
+
+nothing changed, just updated Qt to 5.10.0 version. 
+But processed the same image only take 50ms compared with the last. The most time-consuming part is Mat2QImage(when process big image) and recognize_characters function in LPRecognizer class.
+
+什么都没有干，只是升级到了Qt5.10.0版本，处理与上次相同的图片需要50ms左右。已经探查到耗时的部分为Mat2QImage在转换大尺寸三通道图像和LPRecognizer在recognize_characters函数中识别汉字。
+
 2017.12.12
 
 fixed ImageWidget when code main program, added some new function, and designed UI, added a exception-handling function to recall initialization failure. 

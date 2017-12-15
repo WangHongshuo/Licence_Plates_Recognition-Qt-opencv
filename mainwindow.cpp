@@ -35,7 +35,6 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_open_img_clicked()
 {
-
     QString filename = QFileDialog::getOpenFileName(this,tr("Open Image"),"",tr("Image File(*.bmp *.jpg *.jpeg *.png)"));
     QTextCodec *code = QTextCodec::codecForName("gb18030");
     std::string name = code->fromUnicode(filename).data();
@@ -49,11 +48,12 @@ void MainWindow::on_open_img_clicked()
     else
     {
         QTime a;
-        a.start();
 
         recognizer.set_img(image);
-//        qDebug() << a.elapsed();
+        a.start();
+//        qDebug() << image.channels();
         input_img = Mat2QImage(image);
+        qDebug() << a.elapsed();
         ui->show_input_img->set_image_with_pointer(&input_img);
 
         binary_img = Mat2QImage(recognizer.pre_processed_img);

@@ -3,7 +3,7 @@
 
 QImage Mat2QImage(cv::Mat &mat)
 {
-    //鍗曢�氶亾
+    // 单通道
     if(mat.type() == CV_8UC1)
     {
         QImage image(mat.cols, mat.rows, QImage::Format_Indexed8);
@@ -22,14 +22,14 @@ QImage Mat2QImage(cv::Mat &mat)
         }
         return image;
     }
-    //3閫氶亾
+    // 3通道
     else if(mat.type() == CV_8UC3)
     {
         const uchar *pSrc = (const uchar*)mat.data;
         QImage image(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
         return image.rgbSwapped();
     }
-    //4閫氶亾
+    // 4通道
     else if(mat.type() == CV_8UC4)
     {
         const uchar *pSrc = (const uchar*)mat.data;

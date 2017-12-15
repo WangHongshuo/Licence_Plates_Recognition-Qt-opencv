@@ -309,7 +309,7 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
             {
                 for (int j = 10; j < 36; j++)
                 {
-                    matchTemplate(character[i], NumberLetter[j], result, TM_CCORR_NORMED);
+                    matchTemplate(character[i], NumberLetter[j], result, TM_CCOEFF_NORMED);
                     if(correlation_value[i] < result.ptr<float>(0)[0])
                     {
                         correlation_value[i] = result.ptr<float>(0)[0];
@@ -333,7 +333,7 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
             {
                 for (int j = 0; j < 36; j++)
                 {
-                    matchTemplate(character[i], NumberLetter[j], result, TM_CCORR_NORMED);
+                    matchTemplate(character[i], NumberLetter[j], result, TM_CCOEFF_NORMED);
                     if(correlation_value[i] < result.ptr<float>(0)[0])
                     {
                         correlation_value[i] = result.ptr<float>(0)[0];
@@ -349,7 +349,6 @@ void LPRecognizer::recognize_characters(Mat (&character)[7], QString (&ans)[7], 
             }
         }
     }
-
 }
 
 void LPRecognizer::fix_size(Mat &input)
