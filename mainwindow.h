@@ -23,7 +23,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    cv::Mat image;
+    cv::Mat mat_image;
 
     QImage input_img;
     QImage binary_img;

@@ -13,43 +13,51 @@ Ahhhhhhhh, my English is also bad.
 
 Log:
 
+2017.12.16
+
+Updated mat_qimage_convert.cpp and now the Mat(QImage) can be converted to QImage(Mat) by deep copy(safer) or shallow copy(faster).
+What's more, it took about 33ms to process the same image compared with the last version, because I chose shallow copy.
+But the selectrect class can't fit ImageWidget class when the window size changed. 
+
+更新了mat_qimage_convert.cpp，现在Mat和QImage可以用深拷贝（更安全）或浅拷贝（更快）的方式来进行转换。由于使用了浅拷贝，现在处理与上次相同的图片需要33ms左右。但是selectrect类在窗口变化时不能自适应ImageWidget类的大小。
+
 2017.12.15
 
-nothing changed, just updated Qt to 5.10.0 version. 
-But processed the same image only take 50ms compared with the last. The most time-consuming part is Mat2QImage(when process big image) and recognize_characters function in LPRecognizer class.
+Nothing changed, just updated Qt to 5.10.0 version. 
+But processed the same image only take 50ms compared with the last version. The most time-consuming part is Mat2QImage(when process big image) and recognize_characters function in LPRecognizer class.
 
 什么都没有干，只是升级到了Qt5.10.0版本，处理与上次相同的图片需要50ms左右。已经探查到耗时的部分为Mat2QImage在转换大尺寸三通道图像和LPRecognizer在recognize_characters函数中识别汉字。
 
 2017.12.12
 
-fixed ImageWidget when code main program, added some new function, and designed UI, added a exception-handling function to recall initialization failure. 
+Fixed ImageWidget when code main program, added some new function, and designed UI, added a exception-handling function to recall initialization failure. 
 I will improve processing speed when I'm free, but now I need to do something very shit. :( 
 
 在写主程序时修改了ImageWidget，添加了一些功能，大致设计了一下UI，给LPRecognizer添加了一个异常处理（响应初始化失败事件）。有空再优处理速度，要去忙别的了。 :(
 
 2017.12.11
 
-finished rebuilding and saved the old version files. 
+Finished rebuilding and saved the old version files. 
 It will take 70ms to get the output(image size: 3086 * 887), it can be improved after checking the most time-consuming part.
 
 完成重写，备份旧版本文件，目前处理3086 * 887大小图片要70ms左右（与上次测试图片相同），应该还可以更快，检查耗时的部分。
 
 2017.12.05
 
-ready to rebuild this shit. 
+Ready to rebuild this shit. 
 It will take 100ms to get the output(image size: 3086 * 887).
 
 准备抽时间重写这个了，或许界面也应该重写一下吧？目前处理3086 * 887大小图片要130ms。
 
 2017.11.27
 
-updated bwareaopen function and now it's similar to the one in matlab (relies on connectedComponentsWithStats function in opencv3.3.1).
+Updated bwareaopen function and now it's similar to the one in matlab (relies on connectedComponentsWithStats function in opencv3.3.1).
 
 更新了bwareaopen函数，现在和matlab中的bwareaopen函数效果差不多了(依赖opencv3.3.1中的connectedComponentsWithStats函数）.
 
 2017.09.21
 
-fixed a bug in bwareaopen when using opencv3.3(it seems to be that findContours has some changes).
+Fixed a bug in bwareaopen when using opencv3.3(it seems to be that findContours has some changes).
 
 升级到opencv3.3时修复了bwareaopen函数的错误(findContours函数在opencv3.3时好像发生了变换，不会对原图进行修改了)。
 
