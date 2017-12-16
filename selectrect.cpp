@@ -170,7 +170,7 @@ void SelectRect::cut_img()
             if(w > 0 && h > 0)
             {
                 *save_img = temp->copy(x,y,w,h);
-                QString filename = QFileDialog::getSaveFileName(this, tr("Open File"),
+                QString filename = QFileDialog::getSaveFileName(this, tr("Save File"),
                                                                 "C:/",
                                                                 tr("Images (*.png *.xpm *.jpg *.tiff *.bmp)"));
                 save_img->save(filename);
