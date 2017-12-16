@@ -45,11 +45,15 @@ protected:
 
 signals:
     void select_mode_exit();
+public slots:
+
 
 private slots:
+    void receive_parent_size_changed_value(int width, int height);
     void select_exit();
     void select_reset();
     void cut_img();
+
 
 private:
 

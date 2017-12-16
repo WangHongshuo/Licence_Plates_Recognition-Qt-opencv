@@ -162,6 +162,12 @@ void ImageWidget::contextMenuEvent(QContextMenuEvent *e)
     //mousePosY = QCursor::pos().y();
 }
 
+void ImageWidget::resizeEvent(QResizeEvent *event)
+{
+    if(is_select_mode && is_image_load)
+        emit parent_widget_size_changed(this->width(),this->height());
+}
+
 void ImageWidget::reset_image()
 {
     xtranslate = 0;
@@ -201,13 +207,13 @@ void ImageWidget::select()
         SelectRect* m = new SelectRect(this);
         m->setGeometry(0,0,this->geometry().width(),this->geometry().height());
         connect(m,SIGNAL(select_mode_exit()),this,SLOT(is_select_mode_exit()));
+        connect(this,SIGNAL(parent_widget_size_changed(int,int)),m,SLOT(receive_parent_size_changed_value(int,int)));
         m->set_image(mp_img);
         m->scalex = scalex;
         m->scaley = scaley;
         m->xtranslate = xtranslate;
         m->ytranslate = ytranslate;
         m->show();
-
     }
 }
 

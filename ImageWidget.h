@@ -26,6 +26,9 @@ public:
     void clear();
     void only_show_image(bool flag = false);
 
+signals:
+    void parent_widget_size_changed(int width, int height);
+
 public slots:
 
 private slots:
@@ -47,6 +50,7 @@ private:
     void mouseReleaseEvent(QMouseEvent *e);
     void paintEvent(QPaintEvent *e);
     void contextMenuEvent(QContextMenuEvent *e);
+    void resizeEvent(QResizeEvent *event);
 
     QImage *mp_img;
     double scalex;

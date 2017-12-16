@@ -13,11 +13,17 @@ Ahhhhhhhh, my English is also bad.
 
 Log:
 
-2017.12.16
+2017.12.16 #2
+
+Fixed the problem in the selectrect class and now the selectrect class can fit ImageWidget class when the size of ImageWidget changed(overrided resizeEvent in ImageWidget and added a pair of signal and slot).     
+
+修复了selectrect类的问题，现在selectrect类可以随ImageWidget类的大小变化了（重写了ImageWidget的resizeEvent并增加了一对信号槽）。
+
+2017.12.16 #1
 
 Updated mat_qimage_convert.cpp and now the Mat(QImage) can be converted to QImage(Mat) by deep copy(safer) or shallow copy(faster).    
 What's more, it took about 33ms to process the same image compared with the last version, because I chose shallow copy.      
-But the selectrect class can't fit ImageWidget class when the window size changed. 
+But the selectrect class can't fit ImageWidget class when the size of ImageWidget changed. 
 
 更新了mat_qimage_convert.cpp，现在Mat和QImage可以用深拷贝（更安全）或浅拷贝（更快）的方式来进行转换。     
 由于使用了浅拷贝，现在处理与上次相同的图片需要33ms左右。但是selectrect类在窗口变化时不能自适应ImageWidget类的大小。

@@ -21,6 +21,8 @@ SelectRect::SelectRect(QWidget *parent) : QWidget(parent)
 
 SelectRect::~SelectRect()
 {
+    disconnect(this->parent(),SIGNAL(parent_widget_size_changed(int,int)),this,SLOT(receive_parent_size_changed_value(int,int)));
+    disconnect(this,SIGNAL(select_mode_exit()),this->parent(),SLOT(is_select_mode_exit()));
     delete image;
     delete subMenu;
 }
@@ -187,4 +189,9 @@ void SelectRect::cut_img()
         QMessageBox msgBox(QMessageBox::Critical,tr("错误"),tr("未选中图像！"));
         msgBox.exec();
     }
+}
+
+void SelectRect::receive_parent_size_changed_value(int width, int height)
+{
+    this->setGeometry(0,0,width,height);
 }
