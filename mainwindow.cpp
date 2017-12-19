@@ -14,18 +14,21 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include "mat_qimage_convert.h"
+#include "filenameslistform.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    url_list = new FileNamesListForm(this);
     ImageWidget* show_character;
     for(int i = 0;i < 7;i++)
     {
         show_character = findChild<ImageWidget*>("show_character_"+QString::number(i+1));
         show_character->only_show_image(true);
     }
+
 }
 
 MainWindow::~MainWindow()
@@ -35,20 +38,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_open_img_clicked()
 {
-    QString filename = QFileDialog::getOpenFileName(this,tr("Open Image"),
+    QStringList filenames = QFileDialog::getOpenFileNames(this,tr("Open Image"),
                                                     "",
                                                     tr("Image File(*.bmp *.jpg *.jpeg *.png)"));
-    // Qt load image
-    input_img.load(filename);
+    int input_url_count = filenames.length();
+    start_process(filenames[input_url_count-1]);
+    if(input_url_count > 1)
+    {
+        url_list->set_list(filenames);
+        url_list->setGeometry(this->x()+this->width()-360,this->y(),350,210);
+        url_list->show();
+    }
+    else
+        url_list->close();
 
-    // opencv load image
-//    QTextCodec *code = QTextCodec::codecForName("gb18030");
-//    std::string name = code->fromUnicode(filename).data();
-//    mat_image = cv::imread(name);
+}
 
-
-    if (filename.isNull()||filename == "")
-//    if(mat_image.data == NULL)
+void MainWindow::start_process(QString &input_url)
+{
+    input_img.load(input_url);
+    if (input_url.isNull()||input_url == "")
     {
         QMessageBox msgBox;
         msgBox.setText(tr("Image data is null!"));
@@ -84,7 +93,7 @@ void MainWindow::on_open_img_clicked()
         }
         ui->ans->setText(recognizer.recognized_Licence_Plate);
         qDebug() << a.elapsed();
-    } 
+    }
 }
 
 

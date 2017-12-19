@@ -3,8 +3,10 @@
 
 #include <QMainWindow>
 #include <opencv2/opencv.hpp>
+#include <QString>
 #include "lprecognizer.h"
 #include "ImageWidget.h"
+#include "filenameslistform.h"
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +24,8 @@ private slots:
     void on_open_img_clicked();
 
 private:
+    void start_process(QString &input_url);
+
     Ui::MainWindow *ui;
     cv::Mat mat_image;
 
@@ -30,6 +34,7 @@ private:
     QImage optimized_img;
 
     LPRecognizer recognizer;
+    FileNamesListForm *url_list;
 };
 
 #endif // MAINWINDOW_H

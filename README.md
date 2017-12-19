@@ -11,7 +11,13 @@ Ahhhhhhhh, my English is also bad.
 
 这个程序从2016.11.10开始的，在2017.02.14结束的，是我第一个具备完整功能的程序，也是我0基础写出来的，在写的过程中真是学到了很多东西。用了Qt库写界面，opencv库处理图像。直接从Matlab脚本语言硬翻到C艹的，全是面向过程语言，但是可以工作，虽然有些时候会导致错误。因为是第一次写，所以写的很粗糙，我现在也改不动了，如果要改的话，那就重写好了。再重写我一定要写成类的形式，那个时候还没有类的概念。
 
-Log:
+Log:       
+
+2017.12.19
+
+Added a small function, there will be a list in the pop-up window when you choose multiple pictures.     
+
+添加个小功能，在选取多张图片时，会弹出列表。         
 
 2017.12.16 #2
 

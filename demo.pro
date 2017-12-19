@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     lprecognizer.cpp \
     mat_qimage_convert.cpp \
     ImageWidget.cpp \
-    selectrect.cpp
+    selectrect.cpp \
+    filenameslistform.cpp
 
 INCLUDEPATH += D:/opencv3.3.1/opencv_use/include\
                D:/opencv3.3.1/opencv_use/include/opencv\
@@ -29,7 +30,9 @@ HEADERS  += mainwindow.h \
     lprecognizer.h \
     mat_qimage_convert.h \
     ImageWidget.h \
-    selectrect.h
+    selectrect.h \
+    filenameslistform.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    filenameslistform.ui
 
