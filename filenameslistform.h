@@ -5,6 +5,7 @@
 #include <QStringListModel>
 #include <QStringList>
 #include <QListWidgetItem>
+#include <QTableWidget>
 
 namespace Ui {
 class FileNamesListForm;
@@ -17,7 +18,10 @@ class FileNamesListForm : public QDialog
 public:
     explicit FileNamesListForm(QWidget *parent = 0);
     ~FileNamesListForm();
-    void set_list(QStringList filenames_list);
+    void set_list(QStringList input_list);
+
+signals:
+    void send_url(QString);
 
 private slots:
     void on_shift_up_clicked();
@@ -28,11 +32,16 @@ private slots:
 
     void on_delete_this_clicked();
 
-    void on_show_filenames_list_doubleClicked(const QModelIndex &index);
+    void on_show_filenames_list_cellClicked(int row, int column);
+
+    void on_show_filenames_list_cellDoubleClicked(int row, int column);
 
 private:
+
     Ui::FileNamesListForm *ui;
+    QStringList filename_list;
     QStringList url_list;
+    int selected_filename_index = -1;
 };
 
 #endif // FILENAMESLISTFORM_H

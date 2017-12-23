@@ -22,9 +22,10 @@ public:
 private slots:
 
     void on_open_img_clicked();
+    void receive_url(QString);
 
 private:
-    void start_process(QString &input_url);
+    void start_process(const QString &input_url);
 
     Ui::MainWindow *ui;
     cv::Mat mat_image;
@@ -34,7 +35,8 @@ private:
     QImage optimized_img;
 
     LPRecognizer recognizer;
-    FileNamesListForm *url_list;
+    FileNamesListForm *url_list_dialog = NULL;
+    QStringList filenames;
 };
 
 #endif // MAINWINDOW_H

@@ -18,39 +18,79 @@ FileNamesListForm::~FileNamesListForm()
     delete ui;
 }
 
-void FileNamesListForm::set_list(QStringList filenames_list)
+void FileNamesListForm::set_list(QStringList input_list)
 {
-    url_list = filenames_list;
+    filename_list.clear();
+    url_list.clear();
+
+    filename_list = url_list = input_list;
+
     QFileInfo name;
-    for(int i=0;i<url_list.length();i++)
+    for(int i=0;i<filename_list.length();i++)
     {
-        name.setFile(url_list[i]);
-        url_list[i] = name.fileName();
+        name.setFile(filename_list[i]);
+        filename_list[i] = name.fileName();
     }
-    ui->show_filenames_list->addItems(url_list);
+
+    ui->show_filenames_list->setRowCount(filename_list.length());
+    ui->show_filenames_list->setColumnCount(1);
+    for(int i=0;i<filename_list.length();i++)
+    {
+        QTableWidgetItem* item = new QTableWidgetItem(filename_list[i]);
+        ui->show_filenames_list->setItem(i,0,item);
+    }
 }
 
 void FileNamesListForm::on_shift_up_clicked()
 {
-
+    if(selected_filename_index > 0)
+    {
+        filename_list.move(selected_filename_index,selected_filename_index-1);
+        url_list.move(selected_filename_index,selected_filename_index-1);
+        ui->show_filenames_list->item(selected_filename_index,0)->setText(filename_list.at(selected_filename_index));
+        ui->show_filenames_list->item(selected_filename_index-1,0)->setText(filename_list.at(selected_filename_index-1));
+        selected_filename_index -= 1;
+        ui->show_filenames_list->selectRow(selected_filename_index);
+    }
 }
 
 void FileNamesListForm::on_shift_down_clicked()
 {
-
+    if(selected_filename_index < filename_list.length()-1 && selected_filename_index > -1)
+    {
+        filename_list.move(selected_filename_index,selected_filename_index+1);
+        url_list.move(selected_filename_index,selected_filename_index+1);
+        ui->show_filenames_list->item(selected_filename_index,0)->setText(filename_list.at(selected_filename_index));
+        ui->show_filenames_list->item(selected_filename_index+1,0)->setText(filename_list.at(selected_filename_index+1));
+        selected_filename_index += 1;
+        ui->show_filenames_list->selectRow(selected_filename_index);
+    }
 }
 
 void FileNamesListForm::on_clear_clicked()
 {
-    ui->show_filenames_list->clear();
+    ui->show_filenames_list->clearContents();
+    filename_list.clear();
+    url_list.clear();
+    selected_filename_index = -1;
+    ui->show_filenames_list->setRowCount(0);
 }
 
 void FileNamesListForm::on_delete_this_clicked()
 {
-
+    filename_list.removeAt(selected_filename_index);
+    url_list.removeAt(selected_filename_index);
+    ui->show_filenames_list->removeRow(selected_filename_index);
+    selected_filename_index = -1;
 }
 
-void FileNamesListForm::on_show_filenames_list_doubleClicked(const QModelIndex &index)
+void FileNamesListForm::on_show_filenames_list_cellClicked(int row, int column)
 {
-    qDebug() << index.row();
+    selected_filename_index = row;
 }
+
+void FileNamesListForm::on_show_filenames_list_cellDoubleClicked(int row, int column)
+{
+    emit send_url(url_list.at(row));
+}
+

@@ -13,6 +13,14 @@ Ahhhhhhhh, my English is also bad.
 
 Log:       
 
+2017.12.23
+
+There will be a list in the pop-up window when you choose multiple pictures. But this function is just like a shit because I have to use QStringList to store files path and may lead to memory leaks. I don't like QStringList after reading Qt source code and documentation. I find that QStringList is something like QList<QString> (similars to vector<>), the memory QStringList occupied will not be released when execute clear function. It makes me feel that there are memory leaks existed in my program.       
+PS: I did something about UI in the past few days, I believe that I should focus in programing same little machine vision projects with the help of Opencv, not the UI.
+
+在选中多个图片时，会弹出图片列表。但是该功能完成的很屎，可能存在内存泄漏。在看了Qt的相关源码和文档后，不喜欢QStringList，该类大概是QList<QString>，由Qt托管内存，类似于vector<>，执行clear后不会立即释放内存，没有找到合适的方法来手动释放，一直以为是我什么地方有问题导致内存泄漏。     
+PS：这几天一直在做UI相关的东西，有点偏离方向，我觉得我应该把精力放在用Opencv实现一些小机器视觉算法功能上，而不是专注于写UI。
+
 2017.12.19
 
 Added a small function, there will be a list in the pop-up window when you choose multiple pictures.     

@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    url_list = new FileNamesListForm(this);
+
     ImageWidget* show_character;
     for(int i = 0;i < 7;i++)
     {
@@ -38,25 +38,45 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_open_img_clicked()
 {
-    QStringList filenames = QFileDialog::getOpenFileNames(this,tr("Open Image"),
+    filenames.clear();
+    filenames = QFileDialog::getOpenFileNames(this,tr("Open Image"),
                                                     "",
                                                     tr("Image File(*.bmp *.jpg *.jpeg *.png)"));
     int input_url_count = filenames.length();
-    start_process(filenames[input_url_count-1]);
-    if(input_url_count > 1)
+    if(input_url_count == 0)
     {
-        url_list->set_list(filenames);
-        url_list->setGeometry(this->x()+this->width()-360,this->y(),350,210);
-        url_list->show();
+        QMessageBox msgBox;
+        msgBox.setText(tr("Image data is null!"));
+        msgBox.exec();
     }
     else
-        url_list->close();
+        start_process(filenames[0]);
+
+    if(!url_list_dialog)
+        url_list_dialog = new FileNamesListForm(this);
+    if(input_url_count > 1)
+    {
+        url_list_dialog->set_list(filenames);
+        url_list_dialog->setGeometry(this->x()+this->width()-360,this->y(),350,210);
+        url_list_dialog->show();
+        connect(url_list_dialog,SIGNAL(send_url(QString)),this,SLOT(receive_url(QString)));
+    }
+    else
+    {
+        url_list_dialog->close();
+        delete url_list_dialog;
+        url_list_dialog = NULL;
+    }
 
 }
 
-void MainWindow::start_process(QString &input_url)
+void MainWindow::receive_url(QString url)
 {
-    input_img.load(input_url);
+    start_process(url);
+}
+
+void MainWindow::start_process(const QString &input_url)
+{
     if (input_url.isNull()||input_url == "")
     {
         QMessageBox msgBox;
@@ -65,6 +85,7 @@ void MainWindow::start_process(QString &input_url)
     }
     else
     {
+        input_img.load(input_url);
         QTime a;
         a.start();
 
