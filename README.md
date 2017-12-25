@@ -1,22 +1,19 @@
-# Licence Plates Recognition based on Qt and opencv. 
-Translated from the Matlab vision: https://github.com/WangHongshuo/Licence-Plates-Recognition-Matlab
+# Licence Plates Recognition based on Qt and opencv.        
+Translated from the Matlab vision: https://github.com/WangHongshuo/Licence-Plates-Recognition-Matlab          
+![img](https://github.com/WangHongshuo/Licence_Plates_Recognition-Qt-opencv/blob/master/README/Demo.gif)              
+I can upload files again after nearly 11 months due to the unstable network.              
+This program started in 11/10/2016 and finished in 02/14/2017. It was my first c++ program, I'm a beginer, but I learned a lot in coding this project. It's better than only read the book. I translated it from Matlab script to C++ with Opencv 3.2, it could work in my test but still have some bugs that can lead to terrible crash. But I don't want to fix it by now because it was my first program with UI and it reads badly. I think if I want to recode it, I will write a class and use struct.           
+Ahhhhhhhh, my English is also bad.         
 
-I can upload files again after nearly 11 months due to the unstable network.
-
-This program started in 11/10/2016 and finished in 02/14/2017. It was my first c++ program, I'm a beginer, but I learned a lot in coding this project. It's better than only read the book. I translated it from Matlab script to C++ with Opencv 3.2, it could work in my test but still have some bugs that can lead to terrible crash. But I don't want to fix it by now because it was my first program with UI and it reads badly. I think if I want to recode it, I will write a class and use struct.
-
-Ahhhhhhhh, my English is also bad.
-
-在被墙了11个月后我又可以上github了。
-
-这个程序从2016.11.10开始的，在2017.02.14结束的，是我第一个具备完整功能的程序，也是我0基础写出来的，在写的过程中真是学到了很多东西。用了Qt库写界面，opencv库处理图像。直接从Matlab脚本语言硬翻到C艹的，全是面向过程语言，但是可以工作，虽然有些时候会导致错误。因为是第一次写，所以写的很粗糙，我现在也改不动了，如果要改的话，那就重写好了。再重写我一定要写成类的形式，那个时候还没有类的概念。
+在被墙了11个月后我又可以上github了。         
+这个程序从2016.11.10开始的，在2017.02.14结束的，是我第一个具备完整功能的程序，也是我0基础写出来的，在写的过程中真是学到了很多东西。用了Qt库写界面，opencv库处理图像。直接从Matlab脚本语言硬翻到C艹的，全是面向过程语言，但是可以工作，虽然有些时候会导致错误。因为是第一次写，所以写的很粗糙，我现在也改不动了，如果要改的话，那就重写好了。再重写我一定要写成类的形式，那个时候还没有类的概念。           
 
 Log:       
 
 2017.12.23
 
-There will be a list in the pop-up window when you choose multiple pictures. But this function is just like a shit because I have to use QStringList to store files path and may lead to memory leaks. I don't like QStringList after reading Qt source code and documentation. I find that QStringList is something like QList<QString> (similars to vector<>), the memory QStringList occupied will not be released when execute clear function. It makes me feel that there are memory leaks existed in my program.       
-PS: I did something about UI in the past few days, I believe that I should focus in programing same little machine vision projects with the help of Opencv, not the UI.
+There will be a list in the pop-up window when you choose multiple pictures. But this function is just like a shit because I have to use QStringList to store files path and may lead to memory leaks. I don't like QStringList after reading Qt source code and documentation. I find that QStringList is something like QList<QString> (similars to vector<>), the memory QStringList occupied will not be released when execute clear function. It makes me feel that there are memory leaks existed in my program.              
+PS: I did something about UI in the past few days, I believe that I should focus in programing same little machine vision projects with the help of Opencv, not the UI.       
 
 在选中多个图片时，会弹出图片列表。但是该功能完成的很屎，可能存在内存泄漏。在看了Qt的相关源码和文档后，不喜欢QStringList，该类大概是QList<QString>，由Qt托管内存，类似于vector<>，执行clear后不会立即释放内存，没有找到合适的方法来手动释放，一直以为是我什么地方有问题导致内存泄漏。     
 PS：这几天一直在做UI相关的东西，有点偏离方向，我觉得我应该把精力放在用Opencv实现一些小机器视觉算法功能上，而不是专注于写UI。

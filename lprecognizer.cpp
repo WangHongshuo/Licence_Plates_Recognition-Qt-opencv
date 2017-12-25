@@ -204,7 +204,7 @@ void LPRecognizer::character_segmentation(const Mat &input, Mat (&character)[7])
             if (g < 13 && g > 2 && g % 2 == 1 && W[g + 2] - W[g + 1] < round(n*0.03))
             {
                 int sum_point = countNonZero(input(Rect(W[g + 1], 0, W[g + 2] - W[g + 1], input.rows)));
-                double k = double(sum_point) / double(input.rows) / double(W[g + 2] - W[g + 1]);
+                double k = static_cast<double>(sum_point) /  static_cast<double>(input.rows) /  static_cast<double>(W[g + 2] - W[g + 1]);
                 if (k < 0.75)
                 {
                     W[g + 1] = 0;

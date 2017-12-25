@@ -101,7 +101,7 @@ void MainWindow::start_process(const QString &input_url)
         optimized_img = Mat2QImage_with_pointer(recognizer.fixed_img);
         ui->show_optimized_img->set_image_with_pointer(&optimized_img);
         QImage temp;
-        ImageWidget* show_character;
+        ImageWidget* show_character = NULL;
         QLabel* show_corr2_value;
         for(int i = 0;i < 7;i++)
         {
