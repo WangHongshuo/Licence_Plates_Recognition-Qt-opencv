@@ -13,7 +13,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include "mat_qimage_convert.h"
+#include "QImageMatConvert/mat_qimage_convert.h"
 #include "filenameslistform.h"
 
 MainWindow::MainWindow(QWidget *parent) :

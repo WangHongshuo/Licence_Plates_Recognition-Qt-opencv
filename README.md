@@ -14,6 +14,13 @@ Ahhhhhhhh, my English is also bad.
 ![img](https://github.com/WangHongshuo/Licence_Plates_Recognition-Qt-opencv/blob/master/README/Demo.gif) 
 
 ## Change Log: ##
+
+- 2018.01.09:     
+ 
+Set `ImageWidget` and `mat_qimage_convert` to submodule.     
+
+将 `ImageWidget` 和 `mat_qimage_convert` 设置为子模块。     
+
 - 2017.12.23
 
 There will be a list in the pop-up window when you choose multiple pictures. But this function is just like a shit because I have to use QStringList to store files path and may lead to memory leaks. I don't like QStringList after reading Qt source code and documentation. I find that QStringList is something like QList<QString> (similars to vector<>), the memory QStringList occupied will not be released when execute clear function. It makes me feel that there are memory leaks existed in my program.              

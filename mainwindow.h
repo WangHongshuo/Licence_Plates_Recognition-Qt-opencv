@@ -5,7 +5,7 @@
 #include <opencv2/opencv.hpp>
 #include <QString>
 #include "lprecognizer.h"
-#include "ImageWidget.h"
+#include "ImageWidget-Qt/ImageWidget.h"
 #include "filenameslistform.h"
 
 namespace Ui {

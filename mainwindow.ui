@@ -792,7 +792,7 @@
   <customwidget>
    <class>ImageWidget</class>
    <extends>QWidget</extends>
-   <header>imagewidget.h</header>
+   <header location="global">imagewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
