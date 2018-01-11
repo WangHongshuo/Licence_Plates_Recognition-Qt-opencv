@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     for(int i = 0;i < 7;i++)
     {
         show_character = findChild<ImageWidget*>("show_character_"+QString::number(i+1));
-        show_character->only_show_image(true);
+        show_character->setEnableOnlyShowImage(true);
     }
 
 }
@@ -93,13 +93,13 @@ void MainWindow::start_process(const QString &input_url)
 
         recognizer.set_img(mat_image);
 
-        ui->show_input_img->set_image_with_pointer(&input_img);
+        ui->show_input_img->setImageWithPointer(&input_img);
 
         binary_img = Mat2QImage_with_pointer(recognizer.pre_processed_img);
-        ui->show_binary_img->set_image_with_pointer(&binary_img);
+        ui->show_binary_img->setImageWithPointer(&binary_img);
 
         optimized_img = Mat2QImage_with_pointer(recognizer.fixed_img);
-        ui->show_optimized_img->set_image_with_pointer(&optimized_img);
+        ui->show_optimized_img->setImageWithPointer(&optimized_img);
         QImage temp;
         ImageWidget* show_character = NULL;
         QLabel* show_corr2_value;
@@ -108,7 +108,7 @@ void MainWindow::start_process(const QString &input_url)
             temp = Mat2QImage_with_pointer(recognizer.character[i]);
 //            qDebug() << &temp << temp.data_ptr();
             show_character = findChild<ImageWidget*>("show_character_"+QString::number(i+1));
-            show_character->set_image_with_data(temp);
+            show_character->setImageWithData(temp);
             show_corr2_value = findChild<QLabel*>("show_correlation_value_"+QString::number(i+1));
             show_corr2_value->setText(QString::number(recognizer.correlation_value[i]));
         }
