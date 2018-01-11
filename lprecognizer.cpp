@@ -364,10 +364,8 @@ void LPRecognizer::fix_size(Mat &input)
 void LPRecognizer::binary(Mat &input)
 {
     double min, max;
-    double* minp = &min;
-    double* maxp = &max;
     Mat temp = input(Rect(round(input.cols*0.2),round(input.rows*0.2),round(input.cols*0.6),round(input.rows*0.6)));
-    minMaxIdx(temp, minp, maxp);
+    minMaxIdx(temp, &min, &max,NULL,NULL);
     int T = round((max - (max - min) / 2)* 0.92);
     threshold(input, input, T, 255, THRESH_BINARY);
 }

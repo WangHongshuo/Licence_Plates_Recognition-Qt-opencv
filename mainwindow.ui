@@ -690,18 +690,18 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,1,0">
+     <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,1,1,0">
       <item>
        <widget class="QLabel" name="label">
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>100</width>
           <height>30</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>150</width>
+          <width>100</width>
           <height>30</height>
          </size>
         </property>
@@ -711,7 +711,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,1">
+       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
         <item>
          <widget class="QLabel" name="text_3">
           <property name="sizePolicy">
@@ -763,6 +763,55 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="1,0">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>150</horstretch>
+            <verstretch>20</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>150</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;right&quot;&gt;处理时间：&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelProcessingTime">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <widget class="QPushButton" name="open_img">
         <property name="minimumSize">
          <size>
@@ -792,7 +841,7 @@
   <customwidget>
    <class>ImageWidget</class>
    <extends>QWidget</extends>
-   <header location="global">imagewidget.h</header>
+   <header location="global">ImageWidget-Qt/imagewidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

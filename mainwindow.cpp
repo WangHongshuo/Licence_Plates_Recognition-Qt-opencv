@@ -113,7 +113,7 @@ void MainWindow::start_process(const QString &input_url)
             show_corr2_value->setText(QString::number(recognizer.correlation_value[i]));
         }
         ui->ans->setText(recognizer.recognized_Licence_Plate);
-        qDebug() << a.elapsed();
+        ui->labelProcessingTime->setText(QString::number(a.elapsed())+"  Ms");
     }
 }
 
