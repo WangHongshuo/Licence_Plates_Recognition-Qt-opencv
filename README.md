@@ -15,6 +15,12 @@ Ahhhhhhhh, my English is also bad.
 
 ## Change Log: ##
 
+- 2018.03.07:
+
+Finished rebase, squrshed some commits and deleted some useless files in some commits.
+
+完成变基，合并重复的提交和删除部分提交中不需要的文件。
+
 - 2018.01.09:     
  
 Set `ImageWidget` and `mat_qimage_convert` to submodule.     
